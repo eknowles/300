@@ -8,6 +8,32 @@ const { Meta } = Card;
 
 const tagsData = ['Recruiting', 'English', 'German', 'French'];
 
+const BattalionCard: React.FC<any> = ({ name, memberCount, imageUrl, isRecruiting, language }) => (
+  <Card
+    style={{ width: 300 }}
+    cover={
+      <img
+        className="card-image"
+        alt="Battalion"
+        src={imageUrl}
+      />
+    }
+  >
+    <Meta
+      title={name}
+      description={
+        <Space direction="vertical">
+          <div>{memberCount} Members</div>
+          <div>
+            <Tag>{isRecruiting ? 'Recruiting' : 'Not Recruiting'}</Tag>
+            <Tag>{language}</Tag>
+          </div>
+        </Space>
+      }
+    />
+  </Card>
+)
+
 const BattalionCards = () => {
   const [selectedTags, setSelectedTags] = useState(['']);
 
@@ -30,29 +56,12 @@ const BattalionCards = () => {
         ))}
       </div>
       <div>
-        <Card
-          style={{ width: 300 }}
-          cover={
-            <img
-              className="card-image"
-              alt="Battalion"
-              src="https://static.wixstatic.com/media/0a29d2_287e118b52524d4abeefe1c68fc4c4b4~mv2.jpg/v1/fill/w_863,h_394,al_c,lg_1,q_80/FF2.webp"
-            />
-          }
-        >
-          <Meta
-            title="Fighting Furies UK"
-            description={
-              <Space direction="vertical">
-                <div>120 Members</div>
-                <div>
-                  <Tag>Recruiting</Tag>
-                  <Tag>English</Tag>
-                </div>
-              </Space>
-            }
-          />
-        </Card>
+        <BattalionCard
+          name="FFUK"
+          memberCount={123}
+          language="English"
+          imageUrl="https://static.wixstatic.com/media/0a29d2_287e118b52524d4abeefe1c68fc4c4b4~mv2.jpg/v1/fill/w_863,h_394,al_c,lg_1,q_80/FF2.webp"
+        />
       </div>
     </Space>
   )

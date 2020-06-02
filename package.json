@@ -11,6 +11,7 @@
     "@zeit/next-less": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "antd": "^4.3.0",
+    "framer-motion": "^1.11.0",
     "less": "^3.11.1",
     "next": "9.4.4",
     "react": "16.13.1",

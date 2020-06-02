@@ -1,21 +1,12 @@
 # 300.team
 
-## Getting Started
+## Tech Stack
 
-First, run the development server:
+- [X] [Next.js](https://nextjs.org/showcase) / [React](https://reactjs.org/) / [TypeScript](https://www.typescriptlang.org/)
+- [X] [Ant Design](https://ant.design/) (Custom Theme)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Proposed
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [ ] [Framer Motion](https://www.framer.com/motion/) for animations?
+- [ ] i18n?
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.

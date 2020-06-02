@@ -1,0 +1,19 @@
+type User {
+  id: ID!
+  username: String!
+  email: String! @unique
+  avatarUrl: String!
+  steamId: String!
+  tokens: UserTokens
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type UserTokens @embedded {
+  discordAuthToken: String!
+  discordRefreshToken: String!
+}
+
+type Query {
+  allUsers: [User!] @index
+}
