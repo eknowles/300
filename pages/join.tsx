@@ -7,7 +7,7 @@ import Footer from 'components/footer';
 const { Title } = Typography;
 const { Step } = Steps;
 
-const Home = () => (
+const JoinPage = () => (
   <div>
     <Head>
       <title>Join | 300.team</title>
@@ -30,4 +30,4 @@ const Home = () => (
   </div>
 );
 
-export default Home;
+export default JoinPage;
