@@ -1,18 +1,18 @@
 import { Button, Space, Steps, Typography, Alert } from 'antd';
+import BrochureLayout from 'components/layout';
 import React from 'react';
 import Head from 'next/head';
 import { Card, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 
-import './index.less';
-import BattalionCards from 'components/battalion-cards';
+import CommunityCards from 'components/community-cards';
 
 const { Title } = Typography;
 const { Step } = Steps;
 
 const TestPage = () => (
-  <div>
+  <BrochureLayout>
     <Head>
       <title>300.team</title>
     </Head>
@@ -22,8 +22,8 @@ const TestPage = () => (
           <Steps direction="horizontal" current={0} onChange={() => 1}>
             <Step title="Sign up" subTitle="Discord" description="Create your account" />
             <Step title="Subscribe" subTitle="PayPal" description="Buy a subscription" />
-            <Step title="Join Battalion" description="Find your clan" />
-            <Step title="Join Platoon" description="Make new friends" />
+            <Step title="Join Club" description="Find your clan" />
+            <Step title="Join Squad" description="Make new friends" />
           </Steps>
         </div>
       </Card>
@@ -59,10 +59,10 @@ const TestPage = () => (
         <div style={{ textAlign: 'center' }}>
           <Title>Featured Communities</Title>
         </div>
-        <BattalionCards />
+        <CommunityCards />
       </div>
     </Space>
-  </div>
+  </BrochureLayout>
 );
 
 export default TestPage;

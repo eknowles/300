@@ -1,12 +1,14 @@
+import { Button } from 'antd';
+import BrochureLayout from 'components/layout/layout.component';
 import React from 'react';
 import Head from 'next/head';
 
 const Home = () => (
-  <div>
+  <BrochureLayout>
     <Head>
       <title>Coming Soon</title>
     </Head>
-  </div>
+  </BrochureLayout>
 );
 
 export default Home;

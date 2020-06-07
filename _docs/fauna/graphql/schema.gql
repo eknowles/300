@@ -1,19 +1,37 @@
-type User {
-  id: ID!
+type Profile @collection(name: "profile") {
+  owner: User!
+  firstName: String!
+  lastName: String!
+  avatar: String!
+  locale: String!
+}
+
+type User @collection(name: "users") {
   username: String!
-  email: String! @unique
-  avatarUrl: String!
-  steamId: String!
-  tokens: UserTokens
-  createdAt: Time!
-  updatedAt: Time!
+  email: String! @unique(index: "unique_user_email")
+  stripeCustomerId: String!
+  discordId: ID!
+  tokens: UserToken!
+  profile: UserProfile!
 }
 
-type UserTokens @embedded {
-  discordAuthToken: String!
-  discordRefreshToken: String!
+type UserToken @collection(name: "user_tokens") {
+  owner: User!
+  discord: Token!
 }
 
-type Query {
-  allUsers: [User!] @index
+type Token @embedded {
+  access_token: String!
+  expires_in: Int!
+  refresh_token: String!
+  scope: String!
+  token_type: String!
+}
+
+type Community @collection(name: "communities") {
+  name: String!
+  iconUrl: String!
+  discordId: String!
+  owner: User! @relation(name: "user_community_ownership")
+  members: User! @relation(name: "user_community_membership")
 }

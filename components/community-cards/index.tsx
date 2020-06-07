@@ -1,20 +1,20 @@
 import { Card, Tag, Space } from 'antd';
 import React, { useState } from 'react';
 
-import './battalion-card.less';
+import './community-card.less';
 
 const { CheckableTag } = Tag;
 const { Meta } = Card;
 
 const tagsData = ['Recruiting', 'English', 'German', 'French'];
 
-const BattalionCard: React.FC<any> = ({ name, memberCount, imageUrl, isRecruiting, language }) => (
+const CommunityCard: React.FC<any> = ({ name, memberCount, imageUrl, isRecruiting, language }) => (
   <Card
     style={{ width: 300 }}
     cover={
       <img
         className="card-image"
-        alt="Battalion"
+        alt="Community"
         src={imageUrl}
       />
     }
@@ -34,7 +34,7 @@ const BattalionCard: React.FC<any> = ({ name, memberCount, imageUrl, isRecruitin
   </Card>
 )
 
-const BattalionCards = () => {
+const CommunityCards = () => {
   const [selectedTags, setSelectedTags] = useState(['']);
 
   const handleChange = (tag, checked) => {
@@ -56,7 +56,7 @@ const BattalionCards = () => {
         ))}
       </div>
       <div>
-        <BattalionCard
+        <CommunityCard
           name="FFUK"
           memberCount={123}
           language="English"
@@ -67,4 +67,4 @@ const BattalionCards = () => {
   )
 }
 
-export default BattalionCards;
+export default CommunityCards;
