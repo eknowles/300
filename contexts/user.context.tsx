@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 
 const UserContextProvider = (props) => {
   const [user, setUser] = useState({});
+  const [fetched, setFetched] = useState(false);
   const router = useRouter();
 
   const storeUser = (user) => {
@@ -32,13 +33,14 @@ const UserContextProvider = (props) => {
       const newData = await res.json();
 
       setUser(newData);
+      setFetched(true);
     }
 
     getData().catch();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, storeUser, logout }}>
+    <UserContext.Provider value={{ user, storeUser, logout, fetched }}>
       {props.children}
     </UserContext.Provider>
   );

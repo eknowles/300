@@ -1,6 +1,9 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { setTwoToneColor } from '@ant-design/icons';
+
+setTwoToneColor('#1eaa0d');
 
 import UserContextProvider from 'contexts/user.context';
 

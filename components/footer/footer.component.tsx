@@ -22,14 +22,14 @@ const data = [
     ]
   },
   {
-    title: 'About', links: [
+    title: 'About 300.team', links: [
       { label: 'For Community Owners', href: '/community-owners', disabled: true },
       { label: 'For Players', href: '/for-players', disabled: true },
       { label: 'For Server Hosting Companies', href: '/server-hosting-companies', disabled: true },
     ]
   },
   {
-    title: 'Regions', links: [
+    title: 'Supported Regions', links: [
       { label: 'Europe', href: '/region/eu', disabled: true },
       { label: 'North America', href: '/region/na', disabled: true },
       { label: 'Australia', href: '/region/au', disabled: true },

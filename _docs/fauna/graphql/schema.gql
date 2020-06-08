@@ -1,23 +1,19 @@
-type Profile @collection(name: "profile") {
-  owner: User!
+type User {
+  email: String! @unique
+  profile: Profile!
+  owns: [Community] @relation(name: "community_owner")
+  memberOf: [Community] @relation(name: "community_member")
+  discordTokens: Token!
+}
+
+type Profile @embedded {
   firstName: String!
   lastName: String!
+  username: String!
   avatar: String!
   locale: String!
-}
-
-type User @collection(name: "users") {
-  username: String!
-  email: String! @unique(index: "unique_user_email")
-  stripeCustomerId: String!
-  discordId: ID!
-  tokens: UserToken!
-  profile: UserProfile!
-}
-
-type UserToken @collection(name: "user_tokens") {
-  owner: User!
-  discord: Token!
+  country: String!
+  dob: Date!
 }
 
 type Token @embedded {
@@ -28,10 +24,12 @@ type Token @embedded {
   token_type: String!
 }
 
-type Community @collection(name: "communities") {
+type Community {
   name: String!
+  tag: String!
+  country: String!
+  locale: String!
   iconUrl: String!
-  discordId: String!
-  owner: User! @relation(name: "user_community_ownership")
-  members: User! @relation(name: "user_community_membership")
+  owner: User! @relation(name: "community_owner")
+  members: [User]! @relation(name: "community_member")
 }

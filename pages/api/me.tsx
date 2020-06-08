@@ -1,6 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 
+function getAuthedUser() {
+
+}
+
 export default (req: NextApiRequest, res: NextApiResponse) => {
   const { token } = req.cookies;
 

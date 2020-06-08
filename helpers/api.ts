@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IDiscordOAuth2TokenResponse, IDiscordUserMeResponse } from 'helpers/types';
+import { IDiscordGuild, IDiscordOAuth2TokenResponse, IDiscordUserMeResponse } from 'helpers/types';
 import qs from 'qs';
 
 export const discordApiUrl = 'https://discord.com/api';
@@ -31,6 +31,15 @@ export async function fetchToken(code: string) {
 export async function getUserData(token: string): Promise<IDiscordUserMeResponse> {
   const { data: result } = await instance.request<IDiscordUserMeResponse>({
     url: `/users/@me`,
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return result;
+}
+
+export async function getUserGuilds(token: string): Promise<IDiscordGuild[]> {
+  const { data: result } = await instance.request<any>({
+    url: `/users/@me/guilds`,
     headers: { Authorization: `Bearer ${token}` },
   });
 

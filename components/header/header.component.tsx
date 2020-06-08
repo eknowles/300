@@ -9,9 +9,9 @@ const bannerMessage = `This website is still in BETA. Features may be missing or
 
 const Header: React.FC<{ isBeta?: boolean, backgroundImage?: string }> = ({ isBeta, backgroundImage }) => {
   const router = useRouter();
-  const { user } = useContext(UserContext);
+  const { user, fetched } = useContext(UserContext);
   const login = () => router.push('/api/oauth2/discord');
-  const LoginButton = <Button type="primary" size="large" onClick={() => login()}>Sign in with Discord</Button>;
+  const LoginButton = <Button type="primary" onClick={() => login()}>Sign in with Discord</Button>;
 
   return (
     <div>
@@ -21,13 +21,14 @@ const Header: React.FC<{ isBeta?: boolean, backgroundImage?: string }> = ({ isBe
           <div className="logo">
             <Link href={`/`}>
               <a>
-                <div className="brand">300<span>.team</span></div>
+                300
+                {/*<div className="brand">300<span>.team</span></div>*/}
+                {/*<div className="motto"><span>Communities Made Simple</span></div>*/}
               </a>
             </Link>
-            <div className="motto"><span>Communities Made Simple</span></div>
           </div>
           <div className="auth">
-            {user.id ? <UserMenu /> : LoginButton }
+            {fetched && user.id ? <UserMenu /> : LoginButton }
           </div>
         </div>
       </div>
