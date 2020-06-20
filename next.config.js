@@ -13,8 +13,9 @@ if (typeof require !== 'undefined') {
 }
 
 const DOMAINS = {
-  dev: 'http://localhost:3000',
-  prod: 'https://300.team',
+  development: 'http://localhost:3000',
+  production: 'https://300.team',
+  preview: 'http://dev.300.team',
 };
 
 module.exports = (phase) => {
@@ -34,7 +35,11 @@ module.exports = (phase) => {
       IS_STAGING: isStaging,
       DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
       DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-      ROOT_DOMAIN: isProd ? DOMAINS.prod : DOMAINS.dev,
+      ROOT_DOMAIN: isProd
+        ? DOMAINS.production
+        : isStaging
+        ? DOMAINS.production
+        : DOMAINS.development,
       CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
       CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
       CONTENTFUL_PREVIEW_ACCESS_TOKEN:
