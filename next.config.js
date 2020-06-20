@@ -15,7 +15,7 @@ if (typeof require !== 'undefined') {
 const DOMAINS = {
   development: 'http://localhost:3000',
   production: 'https://300.team',
-  preview: 'http://dev.300.team',
+  preview: 'https://dev.300.team',
 };
 
 module.exports = (phase) => {
