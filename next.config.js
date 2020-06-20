@@ -38,12 +38,8 @@ module.exports = (phase) => {
       ROOT_DOMAIN: isProd
         ? DOMAINS.production
         : isStaging
-        ? DOMAINS.production
+        ? DOMAINS.preview
         : DOMAINS.development,
-      CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
-      CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
-      CONTENTFUL_PREVIEW_ACCESS_TOKEN:
-        process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
     },
     ...withCss({
       cssModules: true,
