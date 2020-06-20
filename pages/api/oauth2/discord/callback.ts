@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
-import { client, q } from 'app/helpers/fauna-client';
+import faunaAuth from 'app/fauna/queries/auth';
 import { fetchToken, getUserData } from 'app/helpers/api';
 
 export default async (
@@ -34,9 +34,7 @@ export default async (
 
   const input = { account, profile };
 
-  const dbRes: any = await client.query(
-    q.Call(q.Function('create_or_update_account_profile'), input)
-  );
+  const dbRes = await faunaAuth(input);
 
   const jwtPayload = {
     accountId: dbRes.account.ref.id,

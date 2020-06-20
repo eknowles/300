@@ -27,3 +27,15 @@ export interface IDiscordGuild {
   owner: boolean;
   permissions: number;
 }
+
+export interface IAccount {
+  email: string;
+  discordId: string;
+  discordToken: any;
+}
+
+export interface IProfile {
+  username: string;
+  avatarUrl: string;
+  localeCode: string;
+}
