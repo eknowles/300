@@ -46,7 +46,7 @@ const UpdateProfileForm: React.FC<{ initialValues?: any }> = ({
 }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (_values) => {
+  const onFinish = () => {
     // console.log('Received values of form: ', values);
   };
 
