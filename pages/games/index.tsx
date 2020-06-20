@@ -1,10 +1,8 @@
-import BrochureLayout from 'components/layout';
-import { GetStaticPaths, GetStaticProps } from 'next';
 import React from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import BrochureLayout from 'app/components/layout';
 
-const GamesPage = () => (
+const GamesPage: React.FC = () => (
   <BrochureLayout>
     <Head>
       <title>Game</title>

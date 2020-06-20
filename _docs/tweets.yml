@@ -1,0 +1,38 @@
+- day: 1
+  url: https://twitter.com/NedKnowles/status/1268599250885185542
+  text: |
+    Day 0 - I want to help people nurture and grow their online communities.
+    I started by focusing on my potential customers, what are their major pain points?
+    #100DaysOfSaaS #business #startups
+
+- day: 1
+  url: https://twitter.com/NedKnowles/status/1268626137468600323
+  text: |
+    Looked into the feasibility, played with a potential tech stack. Did some diagrams.
+    If I'm going to build something, it has to be in a technology that I'm interested in.
+    #100DaysOfSaaS #business #startups
+
+- day: 2
+  url: https://twitter.com/NedKnowles/status/1268645616483291141
+  text: |
+    Got a quick and dirty #nodejs app to realise my PoC. I can't believe how much overhead needed
+    to build a modern app. I do a lot of DevOps for a living, but I want to focus on the product!
+    Moving to @vercel and #nextjs
+    #Serverless #reactjs #technology #startups #100DaysOfSaaS
+
+- day: 3
+  url: https://twitter.com/NedKnowles/status/1268956345694392321
+  text: |
+    Day 3 - Spent Sunday setting up bank accounts, domains, GSuite and legal stuff. I found https://github.com/features/project-management/ to be the perfect tool for light project management! It's also free!
+    #100DaysOfSaaS #business #startups #technology #github #selfemployed
+
+- day: 4
+  url: https://twitter.com/NedKnowles/status/1268957208861200387
+  text: |
+    Day 4 - Worked through #FaunaDB examples, got my head around their database concepts. Deep dived into pricing and how read and write operations work. Learnt about Next.js #serverless limits. Listened to more podcasts #100DaysOfSaaS #business #technology #databases #100DaysOfCode
+
+- day: 5
+  url: https://twitter.com/NedKnowles/status/1268958298168086538
+  text: |
+    Day 5 - Developed a simple OAuth 2.0 flow with Next.js #serverless functions Flexed biceps. Fetched the users profile from Discord and did some reading on their complex permission model Right pointing backhand index https://discord.com/developers/docs/topics/permissions #100DaysOfSasS #startups #technology #business #100DaysOfCode
+

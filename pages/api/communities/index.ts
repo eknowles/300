@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' });
+  }
+
   const { token } = req.cookies;
 
   if (!token) {
