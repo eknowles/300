@@ -34,6 +34,7 @@ module.exports = (phase) => {
       IS_PROD: isProd,
       IS_STAGING: isStaging,
       DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
       DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
       ROOT_DOMAIN: isProd
         ? DOMAINS.production

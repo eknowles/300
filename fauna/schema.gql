@@ -18,6 +18,7 @@ type Account @collection(name: "accounts") {
   profile: Profile! @relation(name: "account_profile")
   discordId: ID! @unique(index: "account_by_discordid")
   discordToken: DiscordToken!
+  stripeCustomerId: ID!
 }
 
 type DiscordToken @embedded {

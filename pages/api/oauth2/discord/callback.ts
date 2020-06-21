@@ -1,8 +1,10 @@
+import UpdateAccountWithStripeId from 'app/fauna/queries/update-account-with-stripe-id';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import faunaAuth from 'app/fauna/queries/auth';
 import { fetchToken, getUserData } from 'app/helpers/api';
+import Stripe from 'stripe';
 
 export default async (
   req: NextApiRequest,
@@ -35,6 +37,27 @@ export default async (
   const input = { account, profile };
 
   const dbRes = await faunaAuth(input);
+
+  // For new accounts, create a Stripe Customer
+  if (dbRes.created) {
+    // Setup Stripe API
+    const s = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2020-03-02',
+    });
+
+    // Make API Call
+    const customer = await s.customers.create({
+      email,
+      preferred_locales: [localeCode],
+      metadata: {
+        discordId,
+        username,
+      },
+    });
+
+    // Save new customer ID to account collection
+    await UpdateAccountWithStripeId(dbRes.account.ref.id, customer.id);
+  }
 
   const jwtPayload = {
     accountId: dbRes.account.ref.id,
