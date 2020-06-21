@@ -31,6 +31,8 @@ module.exports = (phase) => {
 
   return {
     env: {
+      PHASE: phase,
+      IS_DEV: isDev,
       IS_PROD: isProd,
       IS_STAGING: isStaging,
       DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
