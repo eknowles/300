@@ -6,7 +6,10 @@
     "lint": "eslint . --fix",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prebuild": "yarn fauna",
+    "fauna": "fauna-gql",
+    "fauna-override": "fauna-gql --override"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
@@ -37,6 +40,7 @@
     "contentful-import": "^7.8.1",
     "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
+    "fauna-gql-upload": "^1.4.0",
     "faunadb": "^2.14.2",
     "framer-motion": "^1.11.0",
     "graphql-tag": "^2.10.3",

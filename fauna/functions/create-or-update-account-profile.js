@@ -1,36 +1,26 @@
-const faunadb = require('faunadb');
-const q = faunadb.query;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { query } = require('faunadb');
+
 const {
-  If,
-  Lambda,
-  Merge,
-  Update,
-  Let,
-  Var,
-  Create,
-  Collection,
-  Select,
   Query,
+  Lambda,
+  If,
+  Exists,
   Match,
+  Let,
   Get,
   Index,
-  Count,
-  Exists,
-  Paginate,
-} = q;
+  Select,
+  Var,
+  Update,
+  Create,
+  Collection,
+  Merge,
+} = query;
 
-// This counts up the number of profiles in the all_profiles index
-const TotalProfiles = () => {
-  return Query(
-    Lambda(
-      '_',
-      Select(['data', 0], Count(Paginate(Match(Index('all_profiles'), []))))
-    )
-  );
-};
-
-const CreateOrUpdateAccountProfile = () =>
-  Query(
+module.exports = {
+  name: 'create_or_update_account_profile',
+  body: Query(
     Lambda(
       'input',
       If(
@@ -90,9 +80,5 @@ const CreateOrUpdateAccountProfile = () =>
         )
       )
     )
-  );
-
-module.exports = {
-  CreateOrUpdateAccountProfile,
-  TotalProfiles,
+  ),
 };
