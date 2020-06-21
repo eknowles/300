@@ -33,8 +33,8 @@ const Hero: React.FC = () => {
         paddingBottom: paddingSize,
       }}
     >
-      <Row>
-        <Col span={12} offset={6}>
+      <Row align="middle" justify="center">
+        <Col md={{ span: 24 }} lg={{ span: 12 }}>
           <Title>Community Management Software</Title>
           <Space direction="vertical" size="large">
             <Text>
@@ -70,8 +70,8 @@ const Features: React.FC = () => (
       className="wrapper"
       style={{ paddingTop: paddingSize, paddingBottom: paddingSize }}
     >
-      <Row>
-        <Col span={12}>
+      <Row justify="start">
+        <Col md={{ span: 24 }} lg={{ span: 12 }}>
           <Title>
             Save time recruiting and onboarding new members.
             <br />
@@ -93,8 +93,8 @@ const IntegratedBenefits: React.FC = () => (
     className="wrapper"
     style={{ paddingTop: paddingSize, paddingBottom: paddingSize }}
   >
-    <Row>
-      <Col span={12} push={12} style={{ textAlign: 'right' }}>
+    <Row justify="end">
+      <Col md={{ span: 24 }} lg={{ span: 12 }}>
         <Title>Integrated Benefits System</Title>
         <Paragraph>
           We&rsquo;ve integrated with third parties like Discord, Steam and
