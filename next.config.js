@@ -35,6 +35,7 @@ module.exports = (phase) => {
       IS_DEV: isDev,
       IS_PROD: isProd,
       IS_STAGING: isStaging,
+      FAUNADB_SECRET: process.env.FAUNADB_SECRET,
       DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
       DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
