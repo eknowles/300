@@ -1,20 +1,21 @@
 import { client, q } from 'app/helpers/fauna-client';
-import { IAccount, IProfile } from 'app/helpers/types';
+import { IUserAccount, IUserProfile } from 'app/helpers/types';
 import { values } from 'faunadb';
 
 const { Call, Function } = q;
 
 export interface IAuthInput {
-  account: IAccount;
-  profile: IProfile;
+  userAccount: IUserAccount;
+  userProfile: IUserProfile;
+  discordToken: any;
 }
 
 interface IAuthResponse {
-  account: values.Document<IAccount>;
-  profile: values.Document<IProfile>;
+  userAccount: values.Document<IUserAccount>;
+  userProfile: values.Document<IUserProfile>;
   created: boolean;
   updated: boolean;
 }
 
 export default (input): Promise<IAuthResponse> =>
-  client.query(Call(Function('create_or_update_account_profile'), input));
+  client.query(Call(Function('create_or_update_user_account_profile'), input));

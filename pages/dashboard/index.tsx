@@ -38,7 +38,7 @@ const DashboardPage: React.FC = () => {
             <Divider>or</Divider>
           </Col>
           <Col span={10}>
-            <Link href="/communities/new">
+            <Link href="/communities/connect">
               <Button size="large" block icon={<ApartmentOutlined />}>
                 I manage an existing community
               </Button>

@@ -13,14 +13,20 @@ const instance = axios.create({
   timeout: 3000,
 });
 
-export async function fetchToken(
-  code: string
+export enum CallbackPath {
+  login = 'discord/login/callback',
+  bot = 'discord/bot/callback',
+}
+
+export async function exchangeCodeForToken(
+  code: string,
+  callbackPath: CallbackPath
 ): Promise<IDiscordOAuth2TokenResponse> {
   const callback = {
     grant_type: 'authorization_code',
     client_id: process.env.DISCORD_CLIENT_ID,
     client_secret: process.env.DISCORD_CLIENT_SECRET,
-    redirect_uri: `${process.env.ROOT_DOMAIN}/api/oauth2/discord/callback`,
+    redirect_uri: `${process.env.ROOT_DOMAIN}/api/oauth2/${callbackPath}`,
     code,
   };
 

@@ -35,7 +35,7 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
 
   const clickedConnect = () => {
     return fetched && user
-      ? router.push('/communities/new')
+      ? router.push('/communities/connect')
       : router.push('/api/oauth2/discord');
   };
 

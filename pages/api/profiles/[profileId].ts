@@ -5,7 +5,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { profileId } = req.query;
 
   const { data } = await client.query(
-    q.Get(q.Ref(q.Collection('profiles'), profileId))
+    q.Get(q.Ref(q.Collection('user_profiles'), profileId))
   );
 
   return res.json(data);

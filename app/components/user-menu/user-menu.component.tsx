@@ -5,12 +5,12 @@ import { UserContext } from 'app/contexts/user.context';
 
 const UserMenu: React.FC = () => {
   const {
-    user: { profile, profileId },
+    user: { userProfile },
   } = useContext(UserContext);
-  const { username, avatarUrl } = profile;
+  const { username, avatarUrl } = userProfile;
 
   return (
-    <Link href="/profile/[profileId]" as={`/profile/${profileId}`}>
+    <Link href="/dashboard">
       <a>
         <Space>
           <Typography.Text>{username}</Typography.Text>

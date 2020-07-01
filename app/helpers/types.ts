@@ -18,6 +18,7 @@ export interface IDiscordOAuth2TokenResponse {
   refresh_token: string;
   scope: string;
   token_type: string;
+  guild?: any;
 }
 
 export interface IDiscordGuild {
@@ -28,13 +29,13 @@ export interface IDiscordGuild {
   permissions: number;
 }
 
-export interface IAccount {
+export interface IUserAccount {
   email: string;
   discordId: string;
   discordToken: any;
 }
 
-export interface IProfile {
+export interface IUserProfile {
   username: string;
   avatarUrl: string;
   localeCode: string;

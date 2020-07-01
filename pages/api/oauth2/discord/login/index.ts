@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import qs from 'qs';
 import jwt from 'jsonwebtoken';
-import { discordApiUrl } from 'app/helpers/api';
+import { CallbackPath, discordApiUrl } from 'app/helpers/api';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,9 +22,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
   // pass to login
   const params = {
     client_id: process.env.DISCORD_CLIENT_ID,
-    redirect_uri: `${process.env.ROOT_DOMAIN}/api/oauth2/discord/callback`,
+    redirect_uri: `${process.env.ROOT_DOMAIN}/api/oauth2/${CallbackPath.login}`,
     response_type: 'code',
-    scope: 'identify email connections guilds guilds.join',
+    scope: 'identify email',
   };
 
   const url = `${discordApiUrl}/oauth2/authorize?${qs.stringify(params)}`;

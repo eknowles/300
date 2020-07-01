@@ -4,7 +4,7 @@ const { Update, Collection, Ref } = q;
 
 const UpdateAccountWithStripeId = (accountId, stripeCustomerId) =>
   client.query(
-    Update(Ref(Collection('accounts'), accountId), {
+    Update(Ref(Collection('user_accounts'), accountId), {
       data: { stripeCustomerId },
     })
   );

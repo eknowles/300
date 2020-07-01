@@ -3,14 +3,22 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import faunaAuth from 'app/fauna/queries/auth';
-import { fetchToken, getUserData } from 'app/helpers/api';
+import {
+  CallbackPath,
+  exchangeCodeForToken,
+  getUserData,
+} from 'app/helpers/api';
 import Stripe from 'stripe';
+import { client, q } from 'app/helpers/fauna-client';
 
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<any> => {
-  const discordToken = await fetchToken(req.query.code as string);
+  const discordToken = await exchangeCodeForToken(
+    req.query.code as string,
+    CallbackPath.login
+  );
 
   // get user info from discord
   const {
@@ -21,20 +29,19 @@ export default async (
     avatar,
   } = await getUserData(discordToken.access_token);
 
-  const account = {
+  const userAccount = {
     email,
     discordId,
-    discordToken,
   };
 
-  const profile = {
+  const userProfile = {
     username,
     avatarUrl:
       avatar && `https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`,
     localeCode,
   };
 
-  const input = { account, profile };
+  const input = { userAccount, userProfile, discordToken };
 
   const dbRes = await faunaAuth(input);
 
@@ -56,14 +63,20 @@ export default async (
     });
 
     // Save new customer ID to account collection
-    await UpdateAccountWithStripeId(dbRes.account.ref.id, customer.id);
+    await UpdateAccountWithStripeId(dbRes.userAccount.ref.id, customer.id);
   }
 
+  const faunaToken = await client.query(
+    q.Do(q.Create(q.Tokens(), { instance: dbRes.userAccount.ref }))
+  );
+
+  console.log(faunaToken);
+
   const jwtPayload = {
-    accountId: dbRes.account.ref.id,
-    profileId: dbRes.profile.ref.id,
+    userAccountId: dbRes.userAccount.ref.id,
+    userProfileId: dbRes.userProfile.ref.id,
     discordId,
-    profile,
+    userProfile,
   };
 
   // encode user id into jwt

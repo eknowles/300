@@ -14,13 +14,16 @@ export interface ICommunityModel {
 
 const getCommunityData = (communityId: string): Promise<any> => {
   return client.query<{ data: ICommunityModel }>(
-    Get(Ref(Collection('communities'), communityId))
+    Get(Ref(Collection('community_profiles'), communityId))
   );
 };
 
 const getCommunities = (): any => {
   return client.query(
-    Map(Paginate(Match(Index('all_communities'))), Lambda('X', Get(Var('X'))))
+    Map(
+      Paginate(Match(Index('all_community_profiles'))),
+      Lambda('X', Get(Var('X')))
+    )
   );
 };
 

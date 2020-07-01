@@ -40,8 +40,8 @@ const routes = [
     breadcrumbName: 'Communities',
   },
   {
-    path: '/communities/new',
-    breadcrumbName: 'New',
+    path: '/communities/connect',
+    breadcrumbName: 'Connect',
   },
 ];
 
@@ -71,7 +71,7 @@ const NewCommunity: React.FC = () => {
           <Col>
             <Space direction="vertical" size="large">
               <Alert
-                type="error"
+                type="info"
                 message="Community Requirements"
                 description="We are currently only accepting new communities that have over 100 existing members whilst we build out the platform."
               />
@@ -83,7 +83,20 @@ const NewCommunity: React.FC = () => {
                 rowKey={(item) => item.id}
                 size="large"
                 renderItem={(item) => (
-                  <List.Item actions={[<Button key="apply">Apply</Button>]}>
+                  <List.Item
+                    actions={[
+                      <Button
+                        key="connect"
+                        onClick={() =>
+                          router.push(
+                            `/api/oauth2/discord/bot?guildId=${item.id}`
+                          )
+                        }
+                      >
+                        Connect
+                      </Button>,
+                    ]}
+                  >
                     <List.Item.Meta
                       avatar={<Avatar size="large" src={item.iconUrl} />}
                       title={item.name}
