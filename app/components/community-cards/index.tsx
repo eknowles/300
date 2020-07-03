@@ -19,7 +19,6 @@ export const CommunityCard: React.FC<any> = ({
   <Link href="/communities/[communityId]" as={`/communities/${id}`}>
     <Card
       hoverable
-      style={{ width: 300 }}
       cover={
         imageUrl && (
           <img className="card-image" alt="Community" src={imageUrl} />

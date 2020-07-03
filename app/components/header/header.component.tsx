@@ -1,4 +1,5 @@
 import { Alert, Button, Space, Layout, Menu } from 'antd';
+import { mistyrose } from 'color-name';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
@@ -23,7 +24,7 @@ const HeaderComponent: React.FC<{
   );
 
   return (
-    <div>
+    <div style={{ marginBottom: '24px' }}>
       {isBeta && <Alert type="info" message={bannerMessage} banner />}
       <Header>
         <div
@@ -40,8 +41,22 @@ const HeaderComponent: React.FC<{
                 </a>
               </Link>
             </div>
-            <Menu theme="light" mode="horizontal" defaultSelectedKeys={['0']}>
-              {/* <Menu.Item key="1">Communities</Menu.Item> */}
+            <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
+              <Menu.Item
+                key="communities"
+                onClick={() => router.push('/communities')}
+              >
+                Communities
+              </Menu.Item>
+              <Menu.Item key="events" disabled>
+                Events
+              </Menu.Item>
+              <Menu.Item key="games" disabled>
+                Games
+              </Menu.Item>
+              <Menu.Item key="news" disabled>
+                News
+              </Menu.Item>
             </Menu>
           </Space>
 
@@ -50,9 +65,6 @@ const HeaderComponent: React.FC<{
           </div>
         </div>
       </Header>
-      <div className="wrapper">
-        <div className="header" />
-      </div>
     </div>
   );
 };

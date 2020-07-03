@@ -7,7 +7,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import Head from 'next/head';
-import { PageHeader, Typography, Button } from 'antd';
+import { PageHeader, Typography, Button, Col, Row } from 'antd';
 import { CommunityCard } from 'app/components/community-cards';
 
 const { Title, Paragraph } = Typography;
@@ -47,15 +47,18 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
       <div className="wrapper">
         <Title level={1}>Communities</Title>
         <PageHeader title="Featured Communities" />
-        {communities.map((com) => (
-          <CommunityCard
-            id={com.id}
-            key={com.id}
-            avatarUrl={com.iconUrl}
-            name={com.name}
-            language={com.countryCode}
-          />
-        ))}
+        <Row gutter={[24, 24]}>
+          {communities.map((com) => (
+            <Col key={com.id} span={6}>
+              <CommunityCard
+                id={com.id}
+                avatarUrl={com.iconUrl}
+                name={com.name}
+                language={com.countryCode}
+              />
+            </Col>
+          ))}
+        </Row>
       </div>
       <div className="wrapper">
         <div style={{ margin: '10vh 0' }}>
