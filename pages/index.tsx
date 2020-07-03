@@ -15,6 +15,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 
+import FeatureSvg from 'app/components/svg/features.component';
+
 const { TabPane } = Tabs;
 const { Title, Paragraph, Text } = Typography;
 
@@ -82,6 +84,9 @@ const Features: React.FC = () => (
             benefits and membership options
           </Paragraph>
           <Button shape="round">Find out more</Button>
+        </Col>
+        <Col md={{ span: 24 }} lg={{ span: 12 }}>
+          <FeatureSvg />
         </Col>
       </Row>
     </div>
