@@ -11,6 +11,10 @@ export default async (
     CallbackPath.bot
   );
 
+  discordToken.guild.icon =
+    discordToken.guild.icon &&
+    `https://cdn.discordapp.com/icons/${discordToken.guild.id}/${discordToken.guild.icon}.png`;
+
   await faunaCommunityAuth(discordToken);
 
   res.writeHead(302, {
