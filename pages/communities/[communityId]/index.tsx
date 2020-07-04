@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import Head from 'next/head';
-import { PageHeader, Tag } from 'antd';
+import { PageHeader, Button } from 'antd';
 import Link from 'next/link';
+import useSWR from 'swr';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+
 import {
   getCommunityData,
   ICommunityModel,
@@ -36,9 +39,48 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
+const useRole = (communityId: any) => {
+  return useSWR<{
+    authenticated: boolean;
+    role: null | string;
+  }>(
+    `/api/communities/${communityId}/role`,
+    (url) => fetch(url).then((r) => r.json()),
+    {
+      initialData: { authenticated: false, role: null },
+      revalidateOnMount: true,
+    }
+  );
+};
+
+const CommunityActionButton = ({ communityId, authenticated, role }) => {
+  const router = useRouter();
+
+  if (!authenticated) {
+    return null;
+  }
+
+  return (
+    authenticated && (
+      <Button
+        type={role ? 'default' : 'primary'}
+        onClick={() =>
+          router.push(
+            `/communities/${communityId}/${role ? 'membership' : 'join'}`
+          )
+        }
+      >
+        {role ? 'Manage my membership' : 'Become a member'}
+      </Button>
+    )
+  );
+};
+
 const CommunityPage: React.FC<InferGetServerSidePropsType<
   typeof getServerSideProps
 >> = ({ data, communityId }) => {
+  const { data: roleData } = useRole(communityId);
+
   const routes = [
     {
       path: '/',
@@ -64,9 +106,16 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
           title={data.name}
           subTitle={data.localeCode}
           avatar={{ src: data.iconUrl }}
-          tags={<Tag>{data.tag}</Tag>}
+          extra={[
+            <CommunityActionButton
+              key="CommunityActionButton"
+              {...roleData}
+              communityId={communityId}
+            />,
+          ]}
           breadcrumb={{ routes, itemRender }}
         />
+        TODO
       </div>
     </>
   );
