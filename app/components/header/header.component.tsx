@@ -61,7 +61,7 @@ const HeaderComponent: React.FC<{
           </Space>
 
           <div className="auth">
-            {fetched && user.userProfileId ? <UserMenu /> : LoginButton}
+            {fetched && user._id ? <UserMenu /> : LoginButton}
           </div>
         </div>
       </Header>

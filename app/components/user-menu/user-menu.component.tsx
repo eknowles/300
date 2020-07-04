@@ -1,4 +1,4 @@
-import { Avatar, Typography, Space, Menu } from 'antd';
+import { Avatar, Space, Menu } from 'antd';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { UserContext } from 'app/contexts/user.context';
@@ -6,9 +6,8 @@ import { UserContext } from 'app/contexts/user.context';
 const UserMenu: React.FC = () => {
   const router = useRouter();
   const {
-    user: { userProfile },
+    user: { username, avatarUrl },
   } = useContext(UserContext);
-  const { username, avatarUrl } = userProfile;
 
   return (
     <Menu theme="dark" mode="horizontal" selectedKeys={[]}>

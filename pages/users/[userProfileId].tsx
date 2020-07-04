@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { request } from 'graphql-request';
 import useSWR from 'swr';
 import {
   Spin,
@@ -18,20 +19,20 @@ import {
 const { Paragraph, Title } = Typography;
 const { TabPane } = Tabs;
 
-const fetcher = (url, id) => {
-  if (!id) {
-    return Promise.reject();
-  }
-
-  return fetch(`${url}/${id}`).then((r) => r.json());
-};
-
 const ProfilePage: React.FC = () => {
   const router = useRouter();
   const { userProfileId } = router.query;
-  const { data, error } = useSWR<any>(
-    [`/api/profiles`, userProfileId],
-    fetcher
+  const { data, error } = useSWR(userProfileId, (id) =>
+    request(
+      '/api/graphql',
+      `query ViewProfile($id: ID!) {
+       profile: findUserProfileByID(id: $id) {
+         username
+         avatarUrl
+       }
+     }`,
+      { id }
+    )
   );
 
   if (error) return <div>failed to load</div>;
@@ -42,14 +43,14 @@ const ProfilePage: React.FC = () => {
         <title>Profile</title>
       </Head>
       <div className="wrapper">
-        {!data && <Spin />}
-        {data && (
+        {!data?.profile && <Spin />}
+        {data?.profile && (
           <div>
             <PageHeader
               onBack={() => router.back()}
-              avatar={{ src: data.avatarUrl }}
-              title={data.username}
-              tags={<Tag>{data.localeCode}</Tag>}
+              avatar={{ src: data?.profile.avatarUrl }}
+              title={data?.profile.username}
+              tags={<Tag>{data?.profile.localeCode}</Tag>}
               subTitle="Profile"
               extra={<Button disabled>Add to Friends</Button>}
             >
@@ -57,11 +58,15 @@ const ProfilePage: React.FC = () => {
             </PageHeader>
             <Row>
               <Col>
-                <Avatar shape="square" size={128} src={data.avatarUrl} />
+                <Avatar
+                  shape="square"
+                  size={128}
+                  src={data?.profile.avatarUrl}
+                />
                 <Card>left</Card>
               </Col>
               <Col>
-                <Title>{data.username}</Title>
+                <Title>{data?.profile.username}</Title>
                 <div>
                   <Tabs defaultActiveKey="2">
                     <TabPane tab={<span>Tab 1</span>} key="1">

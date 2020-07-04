@@ -1,55 +1,11 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 import Head from 'next/head';
 import { Row, Col, Typography, Space, Avatar, Checkbox } from 'antd';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-
-import {
-  getCommunityData,
-  ICommunityModel,
-} from 'app/fauna/queries/community-page';
 import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
 
 const { Title, Text, Paragraph } = Typography;
 
-export const getServerSideProps: GetServerSideProps<
-  { data: ICommunityModel; communityId: string },
-  { communityId: string }
-> = async (context) => {
-  const { communityId } = context.params;
-  const { data } = await getCommunityData(communityId);
-
-  return {
-    props: {
-      communityId,
-      data,
-    },
-  };
-};
-
-const ManageMembership: React.FC<InferGetServerSidePropsType<
-  typeof getServerSideProps
->> = ({ data, communityId }) => {
-  const router = useRouter();
-  const routes = [
-    {
-      path: '/',
-      breadcrumbName: 'Home',
-    },
-    {
-      path: '/communities',
-      breadcrumbName: 'Communities',
-    },
-    {
-      path: `/communities/${communityId}`,
-      breadcrumbName: data.name,
-    },
-    {
-      path: `/communities/${communityId}/join`,
-      breadcrumbName: 'Join',
-    },
-  ];
-
+const ManageMembership: React.FC = () => {
   return (
     <>
       <Head>
@@ -57,8 +13,8 @@ const ManageMembership: React.FC<InferGetServerSidePropsType<
       </Head>
       <div className="wrapper" style={{ textAlign: 'center' }}>
         <Space direction="vertical" size="large">
-          <Avatar src={data.iconUrl} size={64} />
-          <Title style={{ margin: 0 }}>{data.name}</Title>
+          <Avatar src="data.iconUrl" size={64} />
+          <Title style={{ margin: 0 }}>data.name</Title>
           <Row justify="center">
             <Col span={24} md={{ span: 12 }}>
               <Paragraph>

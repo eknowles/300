@@ -14,8 +14,8 @@ const instance = axios.create({
 });
 
 export enum CallbackPath {
-  login = 'discord/login/callback',
-  bot = 'discord/bot/callback',
+  login = 'discord/login',
+  bot = 'discord/bot',
 }
 
 export async function exchangeCodeForToken(

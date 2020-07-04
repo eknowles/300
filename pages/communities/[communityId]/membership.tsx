@@ -4,12 +4,6 @@ import Head from 'next/head';
 import { PageHeader } from 'antd';
 import Link from 'next/link';
 import useSWR from 'swr';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-
-import {
-  getCommunityData,
-  ICommunityModel,
-} from 'app/fauna/queries/community-page';
 
 const itemRender = (route, params, routes) => {
   const last = routes.indexOf(route) === routes.length - 1;
@@ -24,28 +18,13 @@ const itemRender = (route, params, routes) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<
-  { data: ICommunityModel; communityId: string },
-  { communityId: string }
-> = async (context) => {
-  const { communityId } = context.params;
-  const { data } = await getCommunityData(communityId);
-
-  return {
-    props: {
-      communityId,
-      data,
-    },
-  };
-};
-
 const useRole = (communityId: any) => {
   return useSWR<{
     authenticated: boolean;
     role: null | string;
   }>(
-    `/api/communities/${communityId}/role`,
-    (url) => fetch(url).then((r) => r.json()),
+    [`/api/communities/${communityId}/role`, communityId],
+    (url, id) => id && fetch(url).then((r) => r.json()),
     {
       initialData: { authenticated: false, role: null },
       revalidateOnMount: true,
@@ -53,10 +32,9 @@ const useRole = (communityId: any) => {
   );
 };
 
-const ManageMembership: React.FC<InferGetServerSidePropsType<
-  typeof getServerSideProps
->> = ({ data, communityId }) => {
+const ManageMembership: React.FC = () => {
   const router = useRouter();
+  const { communityId } = router.query;
   const { data: roleData } = useRole(communityId);
 
   const routes = [
@@ -70,7 +48,7 @@ const ManageMembership: React.FC<InferGetServerSidePropsType<
     },
     {
       path: `/communities/${communityId}`,
-      breadcrumbName: data.name,
+      breadcrumbName: `${communityId}`,
     },
     {
       path: `/communities/${communityId}/membership`,
@@ -90,6 +68,7 @@ const ManageMembership: React.FC<InferGetServerSidePropsType<
           breadcrumb={{ routes, itemRender }}
         />
         TODO
+        {JSON.stringify(roleData)}
       </div>
     </>
   );

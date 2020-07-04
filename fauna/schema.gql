@@ -6,6 +6,7 @@
 #directive @unique(index: String) on FIELD_DEFINITION
 
 type Query {
+  myProfile: UserProfile! @resolver(name: "my_profile")
   totalUserProfiles: Int! @resolver(name: "count_total_user_profiles")
   totalCommunityProfiles: Int! @resolver(name: "count_total_community_profiles")
   allUserProfiles: [UserProfile!] @index(name: "all_user_profiles")

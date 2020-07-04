@@ -34,6 +34,7 @@
     "fauna-gql-upload": "^1.4.0",
     "faunadb": "^2.14.2",
     "framer-motion": "^1.11.0",
+    "graphql-request": "^2.0.0",
     "graphql-tag": "^2.10.3",
     "jsonwebtoken": "^8.5.1",
     "lerna": "^3.22.1",
