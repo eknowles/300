@@ -5,6 +5,7 @@ interface IUserProfile {
   _id: string;
   username: string;
   avatarUrl: string;
+  localeCode: string;
 }
 
 interface IUserContext {
@@ -41,6 +42,7 @@ const UserContextProvider: React.FC = ({ children }) => {
           _id
           username
           avatarUrl
+          localeCode
         }
       }`;
       const res = await fetch('/api/graphql', {
