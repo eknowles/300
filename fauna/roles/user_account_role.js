@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { query } = require('faunadb');
 const OnlyUpdateProfileIfOwner = require('../predicates/only-update-profile-if-owner');
+const OnlyReadOwnUserAccount = require('../predicates/only-read-own-user-account');
+const publicRole = require('./public_role');
 
-const { Collection, Index, Function } = query;
+const { Collection, Function } = query;
 
 module.exports = {
   name: 'user_account_role',
   membership: [{ resource: Collection('user_accounts') }],
   privileges: [
+    ...publicRole.privileges,
     {
       resource: Collection('user_profiles'),
       actions: {
@@ -16,31 +19,13 @@ module.exports = {
       },
     },
     {
-      resource: Collection('community_profiles'),
+      resource: Collection('user_accounts'),
       actions: {
-        read: true,
+        read: OnlyReadOwnUserAccount,
       },
     },
     {
-      resource: Index('all_user_profiles'),
-      actions: {
-        unrestricted_read: true,
-      },
-    },
-    {
-      resource: Index('all_community_profiles'),
-      actions: {
-        unrestricted_read: true,
-      },
-    },
-    {
-      resource: Function('count_total_profiles'),
-      actions: {
-        call: true,
-      },
-    },
-    {
-      resource: Function('count_total_communities'),
+      resource: Function('my_profile'),
       actions: {
         call: true,
       },

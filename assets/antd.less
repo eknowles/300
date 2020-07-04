@@ -1,9 +1,16 @@
+//@import '../node_modules/antd/lib/style/themes/default.less';
 @import '../node_modules/antd/lib/style/themes/dark.less';
 @import '../node_modules/antd/dist/antd.less';
 
 @primary-color: #1eaa0d;
 @body-background: #06242b;
 @component-background: #052027;
+//@layout-body-background: #172d36;
+@layout-body-background: @component-background;
+@layout-header-background: @component-background;
+@layout-sider-background: @component-background;
+@layout-trigger-background: @component-background;
+@menu-dark-bg: @layout-header-background;
 //@primary-color: #4059ff;
 //@page-header-back-color: @text-color-secondary;
 //@select-item-selected-bg: @skeleton-color;
@@ -23,10 +30,6 @@
 //@border-color-base: #0c5669;
 //@border-color-split: #073742;
 //@border-style-base: solid;
-@layout-body-background: #172d36;
-@layout-header-background: @component-background;
-@layout-sider-background: @component-background;
-@layout-trigger-background: @component-background;
 //@font-feature-settings-base: tnum;
 //@disabled-color: fade(@white, 30%);
 //@disabled-color-dark: fade(@white, 30%);

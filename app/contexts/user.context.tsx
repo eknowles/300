@@ -1,14 +1,28 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
 
-export const UserContext = createContext(null);
+interface IUserProfile {
+  _id: string;
+  username: string;
+  avatarUrl: string;
+  localeCode: string;
+}
+
+interface IUserContext {
+  user?: IUserProfile;
+  fetched: boolean;
+  logout: () => void;
+  storeUser: (user: IUserProfile) => void;
+}
+
+export const UserContext = createContext<IUserContext>(null);
 
 const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<IUserProfile>(null);
   const [fetched, setFetched] = useState(false);
   const router = useRouter();
 
-  const storeUser = (usr) => {
+  const storeUser = (usr: IUserProfile) => {
     setUser(usr);
   };
 
@@ -17,23 +31,39 @@ const UserContextProvider: React.FC = ({ children }) => {
       document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
     }
 
-    setUser({});
-
+    setUser(null);
     router.push('/').catch();
   };
 
   useEffect(() => {
     async function getData() {
-      const res = await fetch('/api/me');
+      const query = `query {
+        profile: myProfile {
+          _id
+          username
+          avatarUrl
+          localeCode
+        }
+      }`;
+      const res = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
 
       if (res.status !== 200) {
         return;
       }
 
-      const newData = await res.json();
+      const { data, errors } = await res.json();
 
-      setUser(newData);
-      setFetched(true);
+      if (!errors) {
+        setUser(data.profile);
+        setFetched(true);
+      }
     }
 
     getData().catch();
@@ -45,4 +75,5 @@ const UserContextProvider: React.FC = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
 export default UserContextProvider;

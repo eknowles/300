@@ -5,10 +5,7 @@ const { Query, Lambda, Equals, Identity, Select, Get, Var } = query;
 
 module.exports = Query(
   Lambda(
-    'userProfileRef',
-    Equals(
-      Var('userProfileRef'),
-      Select(['data', 'userProfile'], Get(Identity()))
-    )
+    ['originalData', 'newData', 'docRef'],
+    Equals(Var('docRef'), Select(['data', 'userProfile'], Get(Identity())))
   )
 );

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Typography, Card, Avatar, Steps, Row, Col } from 'antd';
+import { Typography, Card, Avatar, Steps, Row, Col, Spin } from 'antd';
 import UpdateProfileForm from 'app/components/update-profile-form';
 import { UserContext } from 'app/contexts/user.context';
 
@@ -8,6 +8,10 @@ const { Step } = Steps;
 
 const SetupPage: React.FC = () => {
   const { user, fetched } = useContext(UserContext);
+
+  if (!fetched || !user) {
+    return <Spin />;
+  }
 
   return (
     <div style={{ minHeight: '100vh' }}>
@@ -24,12 +28,12 @@ const SetupPage: React.FC = () => {
         </Col>
         <Col span={12} style={{ minHeight: '100vh', alignItems: 'center' }}>
           <Title>Complete your profile</Title>
-          <Card title="Who you are" extra={<Avatar src={user.avatar} />}>
+          <Card title="Who you are" extra={<Avatar src={user.avatarUrl} />}>
             {fetched && (
               <UpdateProfileForm
                 initialValues={{
-                  email: user.email,
-                  locale: user.locale.split('-')[0],
+                  email: '',
+                  locale: user.localeCode.split('-')[0],
                 }}
               />
             )}

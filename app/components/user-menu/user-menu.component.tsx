@@ -1,23 +1,23 @@
-import { Avatar, Typography, Space } from 'antd';
-import Link from 'next/link';
+import { Avatar, Space, Menu } from 'antd';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { UserContext } from 'app/contexts/user.context';
 
 const UserMenu: React.FC = () => {
+  const router = useRouter();
   const {
-    user: { userProfile },
+    user: { username, avatarUrl },
   } = useContext(UserContext);
-  const { username, avatarUrl } = userProfile;
 
   return (
-    <Link href="/dashboard">
-      <a>
+    <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
+      <Menu.Item key="dashboard" onClick={() => router.push('/dashboard')}>
         <Space>
-          <Typography.Text>{username}</Typography.Text>
+          {username}
           <Avatar src={avatarUrl}>{username[0]}</Avatar>
         </Space>
-      </a>
-    </Link>
+      </Menu.Item>
+    </Menu>
   );
 };
 
