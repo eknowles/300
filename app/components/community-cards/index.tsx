@@ -9,10 +9,13 @@ const { Meta } = Card;
 
 const tagsData = ['Recruiting', 'English', 'German', 'French'];
 
+const DEFAULT_COVER_IMG =
+  'https://images.unsplash.com/photo-1480506132288-68f7705954bd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3386&q=80';
+
 export const CommunityCard: React.FC<any> = ({
   id,
   name,
-  imageUrl,
+  imageUrl = DEFAULT_COVER_IMG,
   avatarUrl,
   language,
 }) => (

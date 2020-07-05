@@ -5,7 +5,20 @@ const { Collection, Index, Function } = query;
 
 module.exports = {
   name: 'public_role',
+  membership: [{ resource: Collection('user_accounts') }],
   privileges: [
+    {
+      resource: Collection('memberships'),
+      actions: {
+        read: true,
+      },
+    },
+    {
+      resource: Index('user_profile_memberships_by_userProfile'),
+      actions: {
+        unrestricted_read: true,
+      },
+    },
     {
       resource: Collection('user_profiles'),
       actions: {

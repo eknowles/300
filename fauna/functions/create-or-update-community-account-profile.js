@@ -14,6 +14,7 @@ const {
   Var,
   Update,
   Create,
+  Now,
   Collection,
 } = query;
 
@@ -125,6 +126,7 @@ module.exports = {
                       Var('createdCommunityProfile')
                     ),
                     role: 'OWNER',
+                    createdAt: Now(),
                   },
                 }),
               },

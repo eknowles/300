@@ -1,11 +1,35 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import Head from 'next/head';
-import { Row, Col, Typography, Space, Avatar, Checkbox } from 'antd';
+import { Row, Col, Typography, Space, Avatar, Checkbox, Skeleton } from 'antd';
 import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
+import useSWR from 'swr';
+import { request } from 'graphql-request';
 
 const { Title, Text, Paragraph } = Typography;
 
-const ManageMembership: React.FC = () => {
+const useCommunityData = (communityId) => {
+  const { data, error } = useSWR(communityId, (id) =>
+    request(
+      '/api/graphql',
+      `query JoinCommunity($id: ID!) {
+       community: findCommunityProfileByID(id: $id) {
+         name
+         iconUrl
+       }
+     }`,
+      { id }
+    )
+  );
+  return { data, error };
+};
+
+const JoinCommunity: React.FC = () => {
+  const router = useRouter();
+  const { communityId } = router.query;
+  const { error, data } = useCommunityData(communityId);
+  // get data
+
   return (
     <>
       <Head>
@@ -13,8 +37,22 @@ const ManageMembership: React.FC = () => {
       </Head>
       <div className="wrapper" style={{ textAlign: 'center' }}>
         <Space direction="vertical" size="large">
-          <Avatar src="data.iconUrl" size={64} />
-          <Title style={{ margin: 0 }}>data.name</Title>
+          {data
+            ? [
+                <Avatar key="avatar" src={data.community.iconUrl} size={64} />,
+                <Title key="title" style={{ margin: 0 }}>
+                  {data.community.name}
+                </Title>,
+              ]
+            : [
+                <Skeleton.Avatar key="avatar" active={false} size={64} />,
+                <Skeleton.Input
+                  key="title"
+                  style={{ width: '200px' }}
+                  active
+                  size="large"
+                />,
+              ]}
           <Row justify="center">
             <Col span={24} md={{ span: 12 }}>
               <Paragraph>
@@ -84,4 +122,4 @@ const ManageMembership: React.FC = () => {
   );
 };
 
-export default ManageMembership;
+export default JoinCommunity;

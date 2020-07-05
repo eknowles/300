@@ -115,7 +115,7 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
           ]}
           breadcrumb={{ routes, itemRender }}
         />
-        TODO
+        TODO COMMUNITY PROFILE
       </div>
     </>
   );

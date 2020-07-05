@@ -67,8 +67,8 @@ const ManageMembership: React.FC = () => {
           onBack={() => router.push(`/communities/${communityId}`)}
           breadcrumb={{ routes, itemRender }}
         />
-        TODO
-        {JSON.stringify(roleData)}
+        <div>TODO MANAGE MEMBERSHIP</div>
+        <div>{JSON.stringify(roleData)}</div>
       </div>
     </>
   );

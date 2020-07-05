@@ -5,6 +5,7 @@ const {
   Query,
   Lambda,
   Let,
+  Now,
   Ref,
   Match,
   Index,
@@ -41,6 +42,7 @@ module.exports = {
             Get(Var('membership')),
             Create(Collection('memberships'), {
               data: {
+                createdAt: Now(),
                 role: 'ROOKIE',
                 userProfile: Ref(
                   Collection('user_profiles'),

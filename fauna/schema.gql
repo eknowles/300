@@ -58,6 +58,7 @@ type Membership @collection(name: "memberships") {
   userProfile: UserProfile! @relation(name: "user_profile_memberships")
   communityProfile: CommunityProfile! @relation(name: "community_profile_membership")
   role: MembershipRole! # owner, board, director, leader, member, rookie
+  createdAt: Time!
 }
 
 type UserProfile @collection(name: "user_profiles") {

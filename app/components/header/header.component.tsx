@@ -1,5 +1,4 @@
 import { Alert, Button, Space, Layout, Menu } from 'antd';
-import { mistyrose } from 'color-name';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { useRouter } from 'next/router';

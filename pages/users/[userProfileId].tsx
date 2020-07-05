@@ -3,21 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { request } from 'graphql-request';
 import useSWR from 'swr';
-import {
-  Spin,
-  Typography,
-  PageHeader,
-  Button,
-  Tag,
-  Avatar,
-  Tabs,
-  Card,
-  Col,
-  Row,
-} from 'antd';
-
-const { Paragraph, Title } = Typography;
-const { TabPane } = Tabs;
+import { Spin, PageHeader, Button, Tag } from 'antd';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
@@ -40,45 +26,24 @@ const ProfilePage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>{data ? data.profile.username : 'Profile'}</title>
       </Head>
       <div className="wrapper">
-        {!data?.profile && <Spin />}
-        {data?.profile && (
+        {!data && <Spin />}
+        {data && (
           <div>
             <PageHeader
               onBack={() => router.back()}
-              avatar={{ src: data?.profile.avatarUrl }}
-              title={data?.profile.username}
+              avatar={{ src: data.profile.avatarUrl, size: 64 }}
+              title={
+                <div style={{ fontSize: '3em', lineHeight: '1' }}>
+                  {data.profile.username}
+                </div>
+              }
               tags={<Tag>{data?.profile.localeCode}</Tag>}
               subTitle="Profile"
               extra={<Button disabled>Add to Friends</Button>}
-            >
-              <Paragraph>Profile Descriptions Coming Soon</Paragraph>
-            </PageHeader>
-            <Row>
-              <Col>
-                <Avatar
-                  shape="square"
-                  size={128}
-                  src={data?.profile.avatarUrl}
-                />
-                <Card>left</Card>
-              </Col>
-              <Col>
-                <Title>{data?.profile.username}</Title>
-                <div>
-                  <Tabs defaultActiveKey="2">
-                    <TabPane tab={<span>Tab 1</span>} key="1">
-                      Tab 1
-                    </TabPane>
-                    <TabPane tab={<span>Tab 2</span>} key="2">
-                      Tab 2
-                    </TabPane>
-                  </Tabs>
-                </div>
-              </Col>
-            </Row>
+            />
           </div>
         )}
       </div>
