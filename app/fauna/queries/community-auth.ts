@@ -12,7 +12,7 @@ interface ICommunityAuthResponse {
 
 export default (
   input: IDiscordOAuth2TokenResponse
-): Promise<ICommunityAuthResponse> =>
+): Promise<{ result: ICommunityAuthResponse }> =>
   client.query(
     Call(Function('create_or_update_community_account_profile'), input)
   );
