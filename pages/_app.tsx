@@ -73,6 +73,7 @@ MyApp.getInitialProps = async ({ Component, ctx }: any) => {
       const appTreeProps = 'Component' in ctx ? props : { pageProps: props };
       await getDataFromTree(<AppTree {...appTreeProps} />);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('GraphQL error occurred [getDataFromTree]', error);
     }
 

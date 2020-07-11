@@ -1,10 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
+import { Alert } from 'antd';
 import Footer from '../footer';
 import Header from '../header';
 
 import './layout.less';
-import { Alert } from 'antd';
 
 const BrochureLayout: React.FC = ({ children }) => {
   if (process.env.IS_PROD) {
@@ -29,7 +29,7 @@ const BrochureLayout: React.FC = ({ children }) => {
         <meta name="robots" content="none" />
       </Head>
       <div className="app">
-        <Header isBeta={false} />
+        <Header />
         <div className="main">{children}</div>
         <Footer />
       </div>

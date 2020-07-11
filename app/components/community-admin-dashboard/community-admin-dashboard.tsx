@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Button, Card, Col, Row, Statistic, Space } from 'antd';
+import { Button, Card, Col, Row } from 'antd';
 
 const CommunityAdminDashboard = ({ communityId }) => {
   const router = useRouter();

@@ -5,7 +5,6 @@ import qs from 'qs';
 import jwt from 'jsonwebtoken';
 
 import stripe from 'app/helpers/stripe';
-import { IUserTokenJwt } from 'app/helpers/types';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -110,7 +109,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // check if user is owner of requested community profile
     // todo move this into a function
-    const dbRes = await client.query(
+    const dbRes = await client.query<any>(
       q.Let(
         {
           communityAccount: q.Get(
