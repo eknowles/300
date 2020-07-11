@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import Head from 'next/head';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -10,7 +11,7 @@ import {
   ICommunityModel,
 } from 'app/fauna/queries/community-page';
 import CommunityHero from 'app/components/community-hero';
-import { Avatar, Card, List, Row, Col } from 'antd';
+import { Avatar, Card, List, Row, Col, Button } from 'antd';
 
 export const getServerSideProps: GetServerSideProps<
   { data: ICommunityModel; communityId: string },
@@ -30,6 +31,20 @@ export const getServerSideProps: GetServerSideProps<
 const formatDate = (date) => {
   const [, month, , year] = new Date(date).toDateString().split(' ');
   return `${month} ${year}`;
+};
+
+const CommunityActionButton = ({ communityId }) => {
+  const router = useRouter();
+
+  return (
+    <Button
+      type="primary"
+      block
+      onClick={() => router.push(`/communities/${communityId}/join`)}
+    >
+      Become a member
+    </Button>
+  );
 };
 
 const CommunityPage: React.FC<InferGetServerSidePropsType<
@@ -73,6 +88,7 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
           <Col span={19} />
           <Col span={5}>
             <List
+              footer={<CommunityActionButton communityId={communityId} />}
               header="Members"
               itemLayout="horizontal"
               dataSource={(data?.community.memberships.data as any[]) || []}

@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import useSWR from 'swr';
 
-const { Text } = Typography;
-
 const itemRender = (route, params, routes) => {
   const last = routes.indexOf(route) === routes.length - 1;
 
@@ -19,46 +17,7 @@ const itemRender = (route, params, routes) => {
   );
 };
 
-const useRole = (communityId: any) => {
-  return useSWR<{
-    authenticated: boolean;
-    role: null | string;
-  }>(
-    `/api/communities/${communityId}/role`,
-    (url) => fetch(url).then((r) => r.json()),
-    {
-      initialData: { authenticated: false, role: null },
-      revalidateOnMount: true,
-    }
-  );
-};
-
-const CommunityActionButton = ({ communityId, authenticated, role }) => {
-  const router = useRouter();
-
-  if (!authenticated) {
-    return null;
-  }
-
-  return (
-    authenticated && (
-      <Button
-        type="primary"
-        onClick={() =>
-          router.push(
-            `/communities/${communityId}/${role ? 'membership' : 'join'}`
-          )
-        }
-      >
-        {role ? 'Manage my membership' : 'Become a member'}
-      </Button>
-    )
-  );
-};
-
 const CommunityHero = ({ data, communityId }) => {
-  const { data: roleData } = useRole(communityId);
-
   if (!data) {
     return null;
   }
@@ -107,13 +66,6 @@ const CommunityHero = ({ data, communityId }) => {
             </div>
           }
           avatar={{ src: data.iconUrl, size: 64, shape: 'square' }}
-          extra={[
-            <CommunityActionButton
-              key="CommunityActionButton"
-              {...roleData}
-              communityId={communityId}
-            />,
-          ]}
           breadcrumb={{ routes, itemRender }}
         />
       </div>

@@ -11,7 +11,11 @@ const UserMenu: React.FC = () => {
 
   return (
     <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
-      <Menu.Item key="dashboard" onClick={() => router.push('/dashboard')}>
+      <Menu.Item
+        title="Go to Dashboard"
+        key="dashboard"
+        onClick={() => router.push('/dashboard')}
+      >
         <Space>
           {username}
           <Avatar src={avatarUrl}>{username[0]}</Avatar>

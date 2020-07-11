@@ -9,12 +9,6 @@ const CommunityAdminDashboard = ({ communityId }) => {
     <Card>
       <Row gutter={20} align="middle" justify="space-between">
         <Col>
-          <Space size={20}>
-            <Statistic title="Total Members" value={2} />
-            <Statistic title="Total Members" value={2} />
-          </Space>
-        </Col>
-        <Col>
           <Button
             type="primary"
             block

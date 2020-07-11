@@ -33,6 +33,7 @@ const UserCommunityList = ({ userId }) => {
   return (
     <List
       header="Community Memberships"
+      bordered
       itemLayout="horizontal"
       dataSource={items}
       loading={loading}

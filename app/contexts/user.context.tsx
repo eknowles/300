@@ -15,7 +15,7 @@ interface IUserContext {
   storeUser: (user: IUserProfile) => void;
 }
 
-export const UserContext = createContext<IUserContext>(null);
+export const UserContext = createContext<IUserContext | null>(null);
 
 const getProfile = () => {
   if (typeof window !== 'undefined') {
@@ -32,7 +32,7 @@ const setProfile = (data) => {
 };
 
 const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<IUserProfile>(getProfile());
+  const [user, setUser] = useState<IUserProfile | null>(getProfile());
   const [fetched, setFetched] = useState(false);
   const router = useRouter();
 
@@ -51,7 +51,8 @@ const UserContextProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user && user.profile) {
+    if (user && user._id) {
+      setFetched(true);
       return;
     }
 
@@ -87,7 +88,7 @@ const UserContextProvider: React.FC = ({ children }) => {
     }
 
     getData().catch();
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, storeUser, logout, fetched }}>

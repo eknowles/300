@@ -76,6 +76,7 @@ const NewCommunity: React.FC = () => {
                 description="We are currently only accepting new communities that have over 100 existing members whilst we build out the platform."
               />
               <List
+                bordered
                 itemLayout="horizontal"
                 header={<Text>Select a Discord Server</Text>}
                 dataSource={data || []}
