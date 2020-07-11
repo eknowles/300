@@ -19,24 +19,21 @@ export const getServerSideProps: GetServerSideProps<{
 
   return {
     props: {
-      communities: communities.map((community) => ({
-        ...community.data,
-        id: community.ref.id,
-      })),
+      communities,
     },
   };
 };
 
 const ActiveCommunities: React.FC<InferGetServerSidePropsType<
   typeof getServerSideProps
->> = ({ communities }) => {
+>> = ({ communities = [] }) => {
   const { user, fetched } = useContext(UserContext);
   const router = useRouter();
 
   const clickedConnect = () => {
     return fetched && user
       ? router.push('/communities/connect')
-      : router.push('/api/oauth2/discord');
+      : router.push('/api/oauth2/discord/login');
   };
 
   return (
@@ -45,7 +42,9 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
         <title>Communities</title>
       </Head>
       <div className="wrapper">
-        <Title level={1}>Communities</Title>
+        <Title level={1} style={{ marginTop: 30 }}>
+          Discover
+        </Title>
         <PageHeader title="Featured Communities" />
         <Row gutter={[24, 24]}>
           {communities.map((com) => (
@@ -53,6 +52,7 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
               <CommunityCard
                 id={com.id}
                 avatarUrl={com.iconUrl}
+                imageUrl={com.splashUrl}
                 name={com.name}
                 language={com.countryCode}
               />
@@ -61,22 +61,26 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
         </Row>
       </div>
       <div className="wrapper">
-        <div style={{ margin: '10vh 0' }}>
-          <Title level={2}>Connect your Community to 300</Title>
-          <Paragraph>
-            Join the 300 network today and promote your community. We offer a
-            platform to help you manage your organisation and grow your
-            membership with automated benefits and features. Monetise your
-            membership with subscriptions to support your growth and pay for
-            services like game servers and hosting.
-          </Paragraph>
-          <Paragraph>
-            It is FREE to create your community! Our mission is to help small
-            and medium sized communities grow their membership. Join us today
-            and grow your community.
-          </Paragraph>
-          <Button onClick={clickedConnect}>Connect your Community</Button>
-        </div>
+        <Row>
+          <Col span={12}>
+            <div style={{ margin: '10vh 0' }}>
+              <Title level={3}>Connect your Community to 300</Title>
+              <Paragraph>
+                Join the 300 network today and promote your community. We offer
+                a platform to help you manage your organisation and grow your
+                membership with automated benefits and features. Monetise your
+                membership with subscriptions to support your growth and pay for
+                services like game servers and hosting.
+              </Paragraph>
+              <Paragraph>
+                It is FREE to create your community! Our mission is to help
+                small and medium sized communities grow their membership. Join
+                us today and grow your community.
+              </Paragraph>
+              <Button onClick={clickedConnect}>Connect your Community</Button>
+            </div>
+          </Col>
+        </Row>
       </div>
     </>
   );

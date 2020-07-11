@@ -1,52 +1,68 @@
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { request } from 'graphql-request';
-import useSWR from 'swr';
-import { Spin, PageHeader, Button, Tag } from 'antd';
+import { Spin, Button, Result, Alert, Card } from 'antd';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
   const { userProfileId } = router.query;
-  const { data, error } = useSWR(userProfileId, (id) =>
-    request(
-      '/api/graphql',
-      `query ViewProfile($id: ID!) {
-       profile: findUserProfileByID(id: $id) {
-         username
-         avatarUrl
-       }
-     }`,
-      { id }
-    )
+  const { loading, data, error } = useQuery(
+    gql`
+      query UserProfilePage($userProfileId: ID!) {
+        profile: findUserProfileByID(id: $userProfileId) {
+          username
+          avatarUrl
+          localeCode
+        }
+      }
+    `,
+    {
+      variables: { userProfileId },
+    }
   );
 
-  if (error) return <div>failed to load</div>;
+  if (loading || !data) return <Spin />;
+
+  if (error) {
+    return (
+      <Result
+        title="Error Fetching Profile"
+        subTitle={error.message}
+        extra={
+          <Button type="primary" onClick={() => router.push('/')}>
+            Go Back Home
+          </Button>
+        }
+      />
+    );
+  }
+
+  if (!data.profile) {
+    return (
+      <Result
+        title="No User Found"
+        subTitle="You might have the wrong User ID in the URL"
+        extra={
+          <Button type="primary" onClick={() => router.push('/')}>
+            Go Back Home
+          </Button>
+        }
+      />
+    );
+  }
 
   return (
     <>
       <Head>
-        <title>{data ? data.profile.username : 'Profile'}</title>
+        <title>{data.profile.username}</title>
       </Head>
-      <div className="wrapper">
-        {!data && <Spin />}
-        {data && (
-          <div>
-            <PageHeader
-              onBack={() => router.back()}
-              avatar={{ src: data.profile.avatarUrl, size: 64 }}
-              title={
-                <div style={{ fontSize: '3em', lineHeight: '1' }}>
-                  {data.profile.username}
-                </div>
-              }
-              tags={<Tag>{data?.profile.localeCode}</Tag>}
-              subTitle="Profile"
-              extra={<Button disabled>Add to Friends</Button>}
-            />
-          </div>
-        )}
-      </div>
+      <Card bordered={false}>
+        <div className="wrapper">
+          <Alert message="User profiles coming soon" banner />
+        </div>
+      </Card>
     </>
   );
 };

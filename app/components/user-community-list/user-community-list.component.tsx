@@ -1,36 +1,29 @@
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import Link from 'next/link';
 import React from 'react';
 import { List, Avatar } from 'antd';
-import { request } from 'graphql-request';
-import useSWR from 'swr';
 
-const useDashboardData = (profileId) => {
-  const { data, error } = useSWR(profileId, (id) =>
-    request(
-      '/api/graphql',
-      `query ViewProfile($id: ID!) {
-       profile: findUserProfileByID(id: $id) {
-         memberships {
-           data {
-             role
-             createdAt
-             communityProfile {
-               _id
-               name
-               iconUrl
-             }
-           }
-         }
-       }
-     }`,
-      { id }
-    )
-  );
-  return { data, error };
-};
+const MY_COMMUNITY_LIST = gql`
+  query MyCommunityList {
+    profile: myProfile {
+      memberships {
+        data {
+          role
+          createdAt
+          communityProfile {
+            _id
+            name
+            iconUrl
+          }
+        }
+      }
+    }
+  }
+`;
 
 const UserCommunityList = ({ userId }) => {
-  const { data } = useDashboardData(userId);
+  const { loading, data } = useQuery(MY_COMMUNITY_LIST);
 
   const items = data ? (data.profile.memberships?.data as any[]) : [];
 
@@ -42,7 +35,7 @@ const UserCommunityList = ({ userId }) => {
       header="Community Memberships"
       itemLayout="horizontal"
       dataSource={items}
-      loading={!data}
+      loading={loading}
       renderItem={({ createdAt, role, communityProfile }) => (
         <List.Item
           extra={<div>Since {formatter.format(new Date(createdAt))}</div>}
@@ -54,6 +47,15 @@ const UserCommunityList = ({ userId }) => {
             >
               <a>View</a>
             </Link>,
+            role === 'OWNER' && (
+              <Link
+                key="view"
+                href="/communities/[communityId]/admin"
+                as={`/communities/${communityProfile._id}/admin`}
+              >
+                <a>Admin</a>
+              </Link>
+            ),
           ]}
         >
           <List.Item.Meta

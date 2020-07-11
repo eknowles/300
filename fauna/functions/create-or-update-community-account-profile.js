@@ -18,6 +18,11 @@ const {
   Collection,
 } = query;
 
+const defaultBannerUrl =
+  'https://images.unsplash.com/photo-1483428400520-675ef69a3bc4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3264&q=80';
+const defaultSplashUrl =
+  'https://images.unsplash.com/photo-1502444330042-d1a1ddf9bb5b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2253&q=80';
+
 module.exports = {
   name: 'create_or_update_community_account_profile',
   body: Query(
@@ -94,6 +99,8 @@ module.exports = {
                       region: 'EU',
                       countryCode: 'GB',
                       localeCode: 'EN',
+                      bannerUrl: defaultBannerUrl,
+                      splashUrl: defaultSplashUrl,
                       iconUrl: Select(['guild', 'icon'], Var('input')),
                     },
                   }
@@ -112,6 +119,17 @@ module.exports = {
                         Var('createdCommunityProfile')
                       ),
                       ownerAccount: Select(['ref'], Var('guildOwnerAccount')),
+                    },
+                  }
+                ),
+                updateCommunityProfileWithAccount: Update(
+                  Select(['ref'], Var('createdCommunityProfile')),
+                  {
+                    data: {
+                      communityAccount: Select(
+                        ['ref'],
+                        Var('createdCommunityAccount')
+                      ),
                     },
                   }
                 ),
@@ -137,7 +155,7 @@ module.exports = {
                 ),
                 communityProfile: Select(
                   ['ref'],
-                  Var('createdCommunityProfile')
+                  Var('updateCommunityProfileWithAccount')
                 ),
                 created: true,
               }

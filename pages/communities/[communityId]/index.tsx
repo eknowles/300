@@ -1,28 +1,16 @@
-import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import Link from 'next/link';
 import React from 'react';
 import Head from 'next/head';
-import { PageHeader, Button } from 'antd';
-import Link from 'next/link';
-import useSWR from 'swr';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
 import {
   getCommunityData,
   ICommunityModel,
 } from 'app/fauna/queries/community-page';
-
-const itemRender = (route, params, routes) => {
-  const last = routes.indexOf(route) === routes.length - 1;
-
-  return last ? (
-    <span>{route.breadcrumbName}</span>
-  ) : (
-    <Link href={route.path}>
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-      <a>{route.breadcrumbName}</a>
-    </Link>
-  );
-};
+import CommunityHero from 'app/components/community-hero';
+import { Avatar, Card, List, Row, Col } from 'antd';
 
 export const getServerSideProps: GetServerSideProps<
   { data: ICommunityModel; communityId: string },
@@ -39,83 +27,77 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const useRole = (communityId: any) => {
-  return useSWR<{
-    authenticated: boolean;
-    role: null | string;
-  }>(
-    `/api/communities/${communityId}/role`,
-    (url) => fetch(url).then((r) => r.json()),
-    {
-      initialData: { authenticated: false, role: null },
-      revalidateOnMount: true,
-    }
-  );
-};
-
-const CommunityActionButton = ({ communityId, authenticated, role }) => {
-  const router = useRouter();
-
-  if (!authenticated) {
-    return null;
-  }
-
-  return (
-    authenticated && (
-      <Button
-        type={role ? 'default' : 'primary'}
-        onClick={() =>
-          router.push(
-            `/communities/${communityId}/${role ? 'membership' : 'join'}`
-          )
-        }
-      >
-        {role ? 'Manage my membership' : 'Become a member'}
-      </Button>
-    )
-  );
+const formatDate = (date) => {
+  const [, month, , year] = new Date(date).toDateString().split(' ');
+  return `${month} ${year}`;
 };
 
 const CommunityPage: React.FC<InferGetServerSidePropsType<
   typeof getServerSideProps
->> = ({ data, communityId }) => {
-  const { data: roleData } = useRole(communityId);
+>> = ({ data: communityData, communityId }) => {
+  if (!communityId) {
+    return null;
+  }
 
-  const routes = [
+  const { loading, data, error } = useQuery(
+    gql`
+      query CommunityProfileQuery($communityId: ID!) {
+        community: findCommunityProfileByID(id: $communityId) {
+          memberships {
+            data {
+              role
+              createdAt
+              userProfile {
+                _id
+                username
+                avatarUrl
+              }
+            }
+          }
+        }
+      }
+    `,
     {
-      path: '/',
-      breadcrumbName: 'Home',
-    },
-    {
-      path: '/communities',
-      breadcrumbName: 'Communities',
-    },
-    {
-      path: `/communities/${communityId}`,
-      breadcrumbName: data.name,
-    },
-  ];
+      variables: { communityId },
+    }
+  );
 
   return (
     <>
       <Head>
         <title>Community</title>
       </Head>
+      <CommunityHero data={communityData} communityId={communityId} />
       <div className="wrapper">
-        <PageHeader
-          title={data.name}
-          subTitle={data.localeCode}
-          avatar={{ src: data.iconUrl }}
-          extra={[
-            <CommunityActionButton
-              key="CommunityActionButton"
-              {...roleData}
-              communityId={communityId}
-            />,
-          ]}
-          breadcrumb={{ routes, itemRender }}
-        />
-        TODO COMMUNITY PROFILE
+        <Row>
+          <Col span={19} />
+          <Col span={5}>
+            <List
+              header="Members"
+              itemLayout="horizontal"
+              dataSource={(data?.community.memberships.data as any[]) || []}
+              loading={loading}
+              renderItem={(item) => (
+                <List.Item>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar size="large" src={item.userProfile.avatarUrl} />
+                    }
+                    description={formatDate(item.createdAt)}
+                    title={
+                      <Link
+                        href="/users/[userProfileId]"
+                        as={`/users/${item.userProfile._id}`}
+                      >
+                        <a>{item.userProfile.username}</a>
+                      </Link>
+                    }
+                  />
+                </List.Item>
+              )}
+            />
+          </Col>
+        </Row>
       </div>
     </>
   );

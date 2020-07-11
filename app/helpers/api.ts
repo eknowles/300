@@ -1,9 +1,12 @@
 import axios from 'axios';
+import { NextApiRequest } from 'next';
 import qs from 'qs';
+import jwt from 'jsonwebtoken';
 import {
   IDiscordGuild,
   IDiscordOAuth2TokenResponse,
   IDiscordUserMeResponse,
+  IUserTokenJwt,
 } from './types';
 
 export const discordApiUrl = 'https://discord.com/api';
@@ -58,4 +61,19 @@ export async function getUserGuilds(token: string): Promise<IDiscordGuild[]> {
   });
 
   return result;
+}
+
+export function getUserToken(req: NextApiRequest): IUserTokenJwt | null {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const decodedJwt: IUserTokenJwt = jwt.verify(token, process.env.JWT_SECRET);
+    return decodedJwt;
+  } catch (e) {
+    return null;
+  }
 }

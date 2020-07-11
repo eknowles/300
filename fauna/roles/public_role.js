@@ -20,6 +20,12 @@ module.exports = {
       },
     },
     {
+      resource: Index('community_profile_membership_by_communityProfile'),
+      actions: {
+        unrestricted_read: true,
+      },
+    },
+    {
       resource: Collection('user_profiles'),
       actions: {
         read: true,
@@ -44,13 +50,13 @@ module.exports = {
       },
     },
     {
-      resource: Function('count_total_profiles'),
+      resource: Function('count_total_user_profiles'),
       actions: {
         call: true,
       },
     },
     {
-      resource: Function('count_total_communities'),
+      resource: Function('count_total_community_profiles'),
       actions: {
         call: true,
       },

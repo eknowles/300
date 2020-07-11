@@ -17,7 +17,6 @@ export const CommunityCard: React.FC<any> = ({
   name,
   imageUrl = DEFAULT_COVER_IMG,
   avatarUrl,
-  language,
 }) => (
   <Link href="/communities/[communityId]" as={`/communities/${id}`}>
     <Card
@@ -31,13 +30,6 @@ export const CommunityCard: React.FC<any> = ({
       <Meta
         title={name}
         avatar={<Avatar src={avatarUrl} shape="square" size={56} />}
-        description={
-          <Space direction="vertical">
-            <div>
-              <Tag>{language}</Tag>
-            </div>
-          </Space>
-        }
       />
     </Card>
   </Link>

@@ -17,8 +17,22 @@ interface IUserContext {
 
 export const UserContext = createContext<IUserContext>(null);
 
+const getProfile = () => {
+  if (typeof window !== 'undefined') {
+    const item = localStorage.getItem('profile');
+    return (item && JSON.parse(item)) || null;
+  }
+  return null;
+};
+
+const setProfile = (data) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('profile', JSON.stringify(data));
+  }
+};
+
 const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState<IUserProfile>(null);
+  const [user, setUser] = useState<IUserProfile>(getProfile());
   const [fetched, setFetched] = useState(false);
   const router = useRouter();
 
@@ -28,14 +42,19 @@ const UserContextProvider: React.FC = ({ children }) => {
 
   const logout = () => {
     if (typeof document !== 'undefined') {
-      document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     }
 
+    setProfile(null);
     setUser(null);
     router.push('/').catch();
   };
 
   useEffect(() => {
+    if (user && user.profile) {
+      return;
+    }
+
     async function getData() {
       const query = `query {
         profile: myProfile {
@@ -61,6 +80,7 @@ const UserContextProvider: React.FC = ({ children }) => {
       const { data, errors } = await res.json();
 
       if (!errors) {
+        setProfile(data.profile);
         setUser(data.profile);
         setFetched(true);
       }

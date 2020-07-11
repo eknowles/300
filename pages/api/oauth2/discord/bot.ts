@@ -20,10 +20,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       discordToken.guild.icon &&
       `https://cdn.discordapp.com/icons/${discordToken.guild.id}/${discordToken.guild.icon}.png`;
 
-    await faunaCommunityAuth(discordToken);
+    const response = await faunaCommunityAuth(discordToken);
 
     res.writeHead(302, {
-      Location: `/dashboard`,
+      Location: `/communities/${response.communityProfile.id}/admin`,
     });
 
     return res.end();

@@ -71,11 +71,11 @@ const Footer: React.FC = () => {
       <div className="wrapper">
         <List
           grid={{
+            column: 5,
             gutter: 16,
             xs: 1,
             sm: 2,
             md: 3,
-            lg: 5,
           }}
           dataSource={data}
           renderItem={(item) => (

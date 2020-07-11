@@ -40,3 +40,11 @@ export interface IUserProfile {
   avatarUrl: string;
   localeCode: string;
 }
+
+export interface IUserTokenJwt {
+  userAccountId: string;
+  userProfileId: string;
+  discordId: string;
+  userProfile: any;
+  key: string;
+}

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Typography, Card, Avatar, Steps, Row, Col, Spin } from 'antd';
-import UpdateProfileForm from 'app/components/update-profile-form';
+import UpdateProfileForm from 'app/components/community-setup/stripe-create-account-form';
 import { UserContext } from 'app/contexts/user.context';
 
 const { Title } = Typography;

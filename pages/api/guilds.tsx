@@ -1,7 +1,6 @@
 import getUsersDiscordTokenQuery from 'app/fauna/queries/get-users-discord-token';
 import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
-import { getUserGuilds } from 'app/helpers/api';
+import { getUserGuilds, getUserToken } from 'app/helpers/api';
 
 type Response =
   | Array<Record<'name' | 'id' | 'iconUrl', string>>
@@ -9,16 +8,16 @@ type Response =
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse<Response>) => {
-  const { token } = req.cookies;
+  const token = getUserToken(req);
 
   if (!token) {
-    return res.status(401).json({ message: 'No token found' });
+    return res.status(401).json({ message: 'Invalid Token' });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const guilds = await getUserGuilds(
-    await getUsersDiscordTokenQuery(decoded.userAccountId)
+    await getUsersDiscordTokenQuery(token.userAccountId)
   );
+
   const ownedGuilds = guilds
     .filter((g) => g.owner)
     .map((g) => ({

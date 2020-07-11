@@ -1,3 +1,4 @@
+import { getUserToken } from 'app/helpers/api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { client, q } from 'app/helpers/fauna-client';
@@ -10,16 +11,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  const { token } = req.cookies;
+  const token = getUserToken(req);
 
   if (!token) {
-    return res.status(401).json({ message: 'No token found' });
+    return res.status(401).json({ message: 'Invalid Token' });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
   const { communityId } = req.query;
-  const { userProfileId } = decoded;
+  const { userProfileId } = token;
 
   try {
     const dbRes = await client.query<any>(

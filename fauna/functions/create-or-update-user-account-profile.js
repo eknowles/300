@@ -74,10 +74,15 @@ module.exports = {
                 discordToken: Select(['ref'], Var('userDiscordToken')),
               }),
             }),
+            updatedUserProfile: Update(Select(['ref'], Var('newUserProfile')), {
+              data: {
+                userAccount: Select(['ref'], Var('newUserAccount')),
+              },
+            }),
           },
           {
             userAccount: Var('newUserAccount'),
-            userProfile: Var('newUserProfile'),
+            userProfile: Var('updatedUserProfile'),
             created: true,
           }
         )

@@ -1,21 +1,19 @@
+import { getUserToken } from 'app/helpers/api';
 import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
 import { client, q } from 'app/helpers/fauna-client';
 
 const { Exists, Match, Index, Ref, Collection, Let, If, Var, Select, Get } = q;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { token } = req.cookies;
+  const token = getUserToken(req);
 
   if (!token) {
     return res.json({ role: null, authenticated: false });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
   const { communityId } = req.query;
-  const { userProfileId } = decoded;
+  const { userProfileId } = token;
 
   const role = await client.query(
     Let(

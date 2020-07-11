@@ -1,13 +1,24 @@
-import { Alert, Button, Space, Layout, Menu } from 'antd';
+import { Alert, Button, Space, Layout, Menu, Col } from 'antd';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { UserContext } from 'app/contexts/user.context';
+import { AnimatePresence, motion } from 'framer-motion';
 import UserMenu from '../user-menu';
 
 const { Header } = Layout;
 
 const bannerMessage = `This website is still in BETA. Features may be missing or not working as intended. Please visit our discord for the latest news and announcements.`;
+
+const AnimateInOut: React.FC = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
+    {children}
+  </motion.div>
+);
 
 const HeaderComponent: React.FC<{
   isBeta?: boolean;
@@ -16,14 +27,9 @@ const HeaderComponent: React.FC<{
   const router = useRouter();
   const { user, fetched } = useContext(UserContext);
   const login = () => router.push('/api/oauth2/discord/login');
-  const LoginButton = (
-    <Button type="primary" onClick={() => login()}>
-      Sign in with Discord
-    </Button>
-  );
 
   return (
-    <div style={{ marginBottom: '24px' }}>
+    <div>
       {isBeta && <Alert type="info" message={bannerMessage} banner />}
       <Header>
         <div
@@ -60,7 +66,19 @@ const HeaderComponent: React.FC<{
           </Space>
 
           <div className="auth">
-            {fetched && user._id ? <UserMenu /> : LoginButton}
+            <AnimatePresence>
+              {fetched && user && user._id ? (
+                <AnimateInOut>
+                  <UserMenu />
+                </AnimateInOut>
+              ) : (
+                <AnimateInOut>
+                  <Button type="primary" onClick={() => login()}>
+                    Sign in with Discord
+                  </Button>
+                </AnimateInOut>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </Header>

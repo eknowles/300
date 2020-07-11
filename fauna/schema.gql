@@ -34,8 +34,20 @@ type UserAccount @collection(name: "user_accounts") {
 type CommunityAccount @collection(name: "community_accounts") {
   discordId: ID! @unique(index: "community_account_by_discordid")
   discordToken: DiscordBotToken!
+  stripeAccountToken: StripeAccountToken
+  stripeAccountId: String
   ownerAccount: UserAccount!
   communityProfile: CommunityProfile! @relation(name: "community_account_profile")
+}
+
+type StripeAccountToken @collection(name: "stripe_account_tokens") {
+  access_token: String!
+  refresh_token: String!
+  token_type: String!
+  scope: String!
+  stripe_publishable_key: String!
+  stripe_user_id: String!
+  livemode: Boolean
 }
 
 type DiscordToken @collection(name: "discord_user_tokens") {
@@ -67,6 +79,7 @@ type UserProfile @collection(name: "user_profiles") {
   localeCode: String
   countryCode: String
   memberships: [Membership!] @relation(name: "user_profile_memberships")
+  userAccount: UserAccount!
 }
 
 type CommunityProfile @collection(name: "community_profiles") {
@@ -76,5 +89,8 @@ type CommunityProfile @collection(name: "community_profiles") {
   countryCode: String
   localeCode: String
   iconUrl: String
+  bannerUrl: String
+  splashUrl: String
+  communityAccount: CommunityAccount! @relation(name: "community_account_profile")
   memberships: [Membership!] @relation(name: "community_profile_membership")
 }
