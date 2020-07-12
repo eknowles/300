@@ -33,7 +33,7 @@ const DashboardPage: React.FC = () => {
               </Button>,
             ]}
           />
-          <UserCommunityList userId={user && user._id} />
+          <UserCommunityList />
           <ConnectCommunityBox />
         </div>
       )}
