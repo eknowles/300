@@ -1,30 +1,19 @@
 import { useQuery } from '@apollo/react-hooks';
-import { Avatar, Button, Col, List, Row, Space, Typography } from 'antd';
+import { Avatar, Col, List, Row, Space, Typography } from 'antd';
 import CommunityHero from 'app/components/community-hero';
-import { getCommunityData, ICommunityModel, } from 'app/fauna/queries/community-page';
+import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
+import {
+  getCommunityData,
+  ICommunityModel,
+} from 'app/fauna/queries/community-page';
 import formatDate from 'app/helpers/date';
 import gql from 'graphql-tag';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
 
-const { Text } = Typography;
-
-const CommunityActionButton = ({ communityId }) => {
-  const router = useRouter();
-
-  return (
-    <Button
-      type="primary"
-      block
-      onClick={() => router.push(`/communities/${communityId}/join`)}
-    >
-      Become a member
-    </Button>
-  );
-};
+const { Text, Title, Paragraph } = Typography;
 
 export const getServerSideProps: GetServerSideProps<
   { data: ICommunityModel; communityId: string },
@@ -71,6 +60,43 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
     }
   );
 
+  const plans = [
+    {
+      name: 'BASIC',
+      description: 'For new players looking to join a community',
+      integer: '0',
+      fraction: '.00',
+      header: 'Includes',
+      benefits: ['Discord Role', 'Text & Voice Permissions'],
+    },
+    {
+      special: true,
+      name: '12 MONTH',
+      description: 'For competitive and committed players',
+      integer: '3',
+      fraction: '.99',
+      header: 'BASIC Plus',
+      benefits: [
+        'VIP Game Server Slots',
+        'Play Competitive Matches',
+        'Exclusive Training Sessions',
+        'Access to swag',
+      ],
+    },
+    {
+      name: '6 MONTH',
+      description: 'Our top tier for elite supporters and frequent players',
+      integer: '9',
+      fraction: '.99',
+      header: 'TEAM Plus',
+      benefits: [
+        'Hard Enamel Badge',
+        'Priority Games',
+        'Monthly Lottery Ticket',
+      ],
+    },
+  ];
+
   return (
     <>
       <Head>
@@ -78,11 +104,32 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
       </Head>
       <CommunityHero data={communityData} communityId={communityId} />
       <div className="wrapper">
-        <Row>
-          <Col span={19} />
-          <Col span={5}>
+        <Row gutter={[32, 32]}>
+          <Col lg={{ span: 19 }}>
+            <Title level={3}>About Us</Title>
+            <Paragraph>
+              We focus on hardcore strategic gameplay, we aim to win, but most
+              of we all enjoy playing as a team. Our community is very special,
+              we are mostly all from the UK and speak English. As a community we
+              also want to support all the players in the game by offering
+              exciting games run on our servers.
+            </Paragraph>
+            <Title level={3}>Membership</Title>
+            <Paragraph>
+              If you would like to help us pay for servers you can subscribe to
+              our TEAM or VIP plan to take part in massive 50 vs 50 community
+              matches, and jump the queue when joining our servers.
+            </Paragraph>
+            <Row gutter={[32, 32]}>
+              {plans.map((plan) => (
+                <Col key={plan.name} md={{ span: 8 }} span={24}>
+                  <SubscriptionPlanColumn {...plan} />
+                </Col>
+              ))}
+            </Row>
+          </Col>
+          <Col lg={{ span: 5 }}>
             <List
-              footer={<CommunityActionButton communityId={communityId} />}
               header="Members"
               itemLayout="horizontal"
               dataSource={(data?.community.memberships.data as any[]) || []}

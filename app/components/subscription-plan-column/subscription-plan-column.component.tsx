@@ -25,13 +25,11 @@ const SubscriptionPlanColumn = ({
       const res = await fetch(`/api/communities/${communityId}/join`, {
         method: 'POST',
       });
-      const { membershipId } = await res.json();
-      message.success('Success! You have joined a community');
-      await router.push(
-        `/communities/${communityId}?new_member=${membershipId}`
-      );
+      await res.json();
+      message.success(`Success! You have joined a community`);
+      await router.push(`/dashboard`);
     } catch (e) {
-      //
+      message.error(e.message);
     } finally {
       setJoining(false);
     }
