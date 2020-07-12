@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/react-hooks';
+import { Avatar, List } from 'antd';
+import formatDate from 'app/helpers/date';
 import gql from 'graphql-tag';
 import Link from 'next/link';
 import React from 'react';
-import { List, Avatar } from 'antd';
 
 const MY_COMMUNITY_LIST = gql`
   query MyCommunityList {
@@ -22,13 +23,10 @@ const MY_COMMUNITY_LIST = gql`
   }
 `;
 
-const UserCommunityList = ({ userId }) => {
+const UserCommunityList = () => {
   const { loading, data } = useQuery(MY_COMMUNITY_LIST);
 
   const items = data ? (data.profile.memberships?.data as any[]) : [];
-
-  // todo set locale to be based on the users localeCode
-  const formatter = new Intl.DateTimeFormat('en-GB');
 
   return (
     <List
@@ -39,7 +37,7 @@ const UserCommunityList = ({ userId }) => {
       loading={loading}
       renderItem={({ createdAt, role, communityProfile }) => (
         <List.Item
-          extra={<div>Since {formatter.format(new Date(createdAt))}</div>}
+          extra={<div>Joined {formatDate(createdAt)}</div>}
           actions={[
             <Link
               key="view"

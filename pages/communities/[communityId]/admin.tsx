@@ -1,12 +1,12 @@
+import { useQuery } from '@apollo/react-hooks';
+import { PageHeader, Result, Spin } from 'antd';
+import CommunityAdminDashboard from 'app/components/community-admin-dashboard';
+import CommunitySetup from 'app/components/community-setup';
+import gql from 'graphql-tag';
+import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Head from 'next/head';
-import { PageHeader, Result, Spin } from 'antd';
-import Link from 'next/link';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
-import CommunitySetup from 'app/components/community-setup';
-import CommunityAdminDashboard from 'app/components/community-admin-dashboard';
 
 const itemRender = (route, params, routes) => {
   const last = routes.indexOf(route) === routes.length - 1;
@@ -49,9 +49,7 @@ const CommunityAdmin: React.FC = () => {
     variables: { communityId },
   });
 
-  if (loading) {
-    return <Spin />;
-  }
+  if (loading || !data) return <Result icon={<Spin />} />;
 
   if (!data.community) {
     return <Result title="No Community Data" />;
@@ -61,7 +59,7 @@ const CommunityAdmin: React.FC = () => {
   // 2. check if profile has been confirmed (name, games, tag, url)
   const { community } = data;
   const {
-    communityAccount: { stripeAccountId, ownerAccount },
+    communityAccount: { stripeAccountId },
   } = community;
 
   // 3. check stripe user id
@@ -77,7 +75,7 @@ const CommunityAdmin: React.FC = () => {
     },
     {
       path: `/communities/${communityId}`,
-      breadcrumbName: data.community.name,
+      breadcrumbName: community.name,
     },
     {
       path: `/communities/${communityId}/admin`,

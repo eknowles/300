@@ -1,16 +1,14 @@
-import { UserContext } from 'app/contexts/user.context';
+import { Col, PageHeader, Row, Typography } from 'antd';
+import { CommunityCard } from 'app/components/community-cards';
 import {
   getCommunities,
   ICommunityModel,
 } from 'app/fauna/queries/community-page';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
 import Head from 'next/head';
-import { PageHeader, Typography, Button, Col, Row } from 'antd';
-import { CommunityCard } from 'app/components/community-cards';
+import React from 'react';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 export const getServerSideProps: GetServerSideProps<{
   communities: Array<ICommunityModel & { id: string }>;

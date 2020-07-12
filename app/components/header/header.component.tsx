@@ -1,14 +1,12 @@
-import { Alert, Button, Space, Layout, Menu } from 'antd';
-import Link from 'next/link';
-import React, { useContext } from 'react';
-import { useRouter } from 'next/router';
+import { Button, Layout, Menu, Space } from 'antd';
 import { UserContext } from 'app/contexts/user.context';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import UserMenu from '../user-menu';
 
 const { Header } = Layout;
-
-const bannerMessage = `This website is still in BETA. Features may be missing or not working as intended. Please visit our discord for the latest news and announcements.`;
 
 const AnimateInOut: React.FC = ({ children }) => (
   <motion.div

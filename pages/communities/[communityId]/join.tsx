@@ -1,10 +1,10 @@
+import { Avatar, Checkbox, Col, Row, Skeleton, Space, Typography } from 'antd';
+import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
+import { request } from 'graphql-request';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Head from 'next/head';
-import { Row, Col, Typography, Space, Avatar, Checkbox, Skeleton } from 'antd';
-import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
 import useSWR from 'swr';
-import { request } from 'graphql-request';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -27,8 +27,7 @@ const useCommunityData = (communityId) => {
 const JoinCommunity: React.FC = () => {
   const router = useRouter();
   const { communityId } = router.query;
-  const { error, data } = useCommunityData(communityId);
-  // get data
+  const { data } = useCommunityData(communityId);
 
   return (
     <>

@@ -1,7 +1,6 @@
 import { getUserToken } from 'app/helpers/api';
-import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
 import { client, q } from 'app/helpers/fauna-client';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const { Call, Function } = q;
 

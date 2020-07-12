@@ -1,88 +1,49 @@
-import React from 'react';
-import Head from 'next/head';
-import { setTwoToneColor } from '@ant-design/icons';
-import NextNprogress from 'nextjs-progressbar';
+import { LoadingOutlined, setTwoToneColor } from '@ant-design/icons';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { Spin } from 'antd';
 import BrochureLayout from 'app/components/layout';
 import UserContextProvider from 'app/contexts/user.context';
-import ApolloClient from 'apollo-client';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
-import { getDataFromTree } from '@apollo/react-ssr';
-import fetch from 'isomorphic-fetch';
-
+import { useApollo } from 'app/helpers/with-apollo';
+import Head from 'next/head';
+import NextNprogress from 'nextjs-progressbar';
+import React from 'react';
 import '../assets/antd.less';
 import '../assets/global.less';
 
 setTwoToneColor('#1eaa0d');
 
-const link = createHttpLink({
-  uri: `${process.env.ROOT_DOMAIN}/api/graphql`,
-  fetch,
-});
+Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 24 }} spin />);
 
-const apollo = new ApolloClient({
-  link,
-  cache: new InMemoryCache(),
-});
+const App = ({ Component, pageProps }) => {
+  const apolloClient = useApollo(pageProps.initialApolloState);
 
-const MyApp = ({ Component, pageProps }) => (
-  <>
-    <Head>
-      <meta charSet="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta
-        name="google-site-verification"
-        content="jJEM2HJi1AU5A39kYqPtHVPzsyeRIJUhYNGFNFk1jeQ"
+  return (
+    <>
+      <Head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="google-site-verification"
+          content="jJEM2HJi1AU5A39kYqPtHVPzsyeRIJUhYNGFNFk1jeQ"
+        />
+        <meta name="robots" content="none" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <NextNprogress
+        options={{ trickleSpeed: 100 }}
+        showAfterMs={1000}
+        spinner={false}
+        color="#1eaa0d"
       />
-      <meta name="robots" content="none" />
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-    <NextNprogress
-      options={{ trickleSpeed: 100 }}
-      showAfterMs={1000}
-      spinner={false}
-      color="#1eaa0d"
-    />
-    <ApolloProvider client={apollo}>
-      <UserContextProvider>
-        <BrochureLayout>
-          <Component {...pageProps} />
-        </BrochureLayout>
-      </UserContextProvider>
-    </ApolloProvider>
-  </>
-);
-
-MyApp.getInitialProps = async ({ Component, ctx }: any) => {
-  let pageProps = {} as any;
-  const apolloState = { data: {} };
-  const { AppTree } = ctx;
-
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-  }
-
-  if (typeof window === 'undefined') {
-    if (ctx.res && (ctx.res.headersSent || ctx.res.finished)) {
-      return pageProps;
-    }
-
-    try {
-      const props = { ...pageProps, apolloState, apollo };
-      const appTreeProps = 'Component' in ctx ? props : { pageProps: props };
-      await getDataFromTree(<AppTree {...appTreeProps} />);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('GraphQL error occurred [getDataFromTree]', error);
-    }
-
-    Head.rewind();
-
-    apolloState.data = apollo.cache.extract();
-  }
-
-  return { pageProps };
+      <ApolloProvider client={apolloClient}>
+        <UserContextProvider>
+          <BrochureLayout>
+            <Component {...pageProps} />
+          </BrochureLayout>
+        </UserContextProvider>
+      </ApolloProvider>
+    </>
+  );
 };
 
-export default MyApp;
+export default App;

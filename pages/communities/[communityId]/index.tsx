@@ -1,17 +1,30 @@
 import { useQuery } from '@apollo/react-hooks';
+import { Avatar, Button, Col, List, Row, Space, Typography } from 'antd';
+import CommunityHero from 'app/components/community-hero';
+import { getCommunityData, ICommunityModel, } from 'app/fauna/queries/community-page';
+import formatDate from 'app/helpers/date';
 import gql from 'graphql-tag';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Head from 'next/head';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-import {
-  getCommunityData,
-  ICommunityModel,
-} from 'app/fauna/queries/community-page';
-import CommunityHero from 'app/components/community-hero';
-import { Avatar, Card, List, Row, Col, Button } from 'antd';
+const { Text } = Typography;
+
+const CommunityActionButton = ({ communityId }) => {
+  const router = useRouter();
+
+  return (
+    <Button
+      type="primary"
+      block
+      onClick={() => router.push(`/communities/${communityId}/join`)}
+    >
+      Become a member
+    </Button>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps<
   { data: ICommunityModel; communityId: string },
@@ -28,25 +41,6 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const formatDate = (date) => {
-  const [, month, , year] = new Date(date).toDateString().split(' ');
-  return `${month} ${year}`;
-};
-
-const CommunityActionButton = ({ communityId }) => {
-  const router = useRouter();
-
-  return (
-    <Button
-      type="primary"
-      block
-      onClick={() => router.push(`/communities/${communityId}/join`)}
-    >
-      Become a member
-    </Button>
-  );
-};
-
 const CommunityPage: React.FC<InferGetServerSidePropsType<
   typeof getServerSideProps
 >> = ({ data: communityData, communityId }) => {
@@ -54,7 +48,7 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
     return null;
   }
 
-  const { loading, data, error } = useQuery(
+  const { loading, data } = useQuery(
     gql`
       query CommunityProfileQuery($communityId: ID!) {
         community: findCommunityProfileByID(id: $communityId) {
@@ -94,21 +88,23 @@ const CommunityPage: React.FC<InferGetServerSidePropsType<
               dataSource={(data?.community.memberships.data as any[]) || []}
               loading={loading}
               renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar size="large" src={item.userProfile.avatarUrl} />
-                    }
-                    description={formatDate(item.createdAt)}
-                    title={
+                <List.Item style={{ lineHeight: '1.2' }}>
+                  <Space>
+                    <Avatar size={30} src={item.userProfile.avatarUrl} />
+                    <Space direction="vertical" size={0}>
                       <Link
                         href="/users/[userProfileId]"
                         as={`/users/${item.userProfile._id}`}
                       >
-                        <a>{item.userProfile.username}</a>
+                        <a style={{ fontSize: '15px', fontWeight: 'bold' }}>
+                          {item.userProfile.username}
+                        </a>
                       </Link>
-                    }
-                  />
+                      <Text type="secondary" style={{ fontSize: '12px' }}>
+                        {formatDate(item.createdAt)}
+                      </Text>
+                    </Space>
+                  </Space>
                 </List.Item>
               )}
             />

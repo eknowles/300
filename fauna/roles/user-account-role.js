@@ -5,7 +5,7 @@ const OnlyReadOwnUserAccount = require('../predicates/only-read-own-user-account
 const OnlyDeleteOwnMembership = require('../predicates/only-delete-own-membership');
 const OnlyCommunityOwnerCanUpdate = require('../predicates/only-community-owner-can-update');
 
-const { Query, Lambda, Equals, Identity, Var, Match, Get, Select } = query;
+const { Query, Lambda, Equals, Identity, Var, Get, Select } = query;
 const { Collection, Function, Index } = query;
 
 module.exports = {

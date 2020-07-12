@@ -1,5 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+/* eslint-disable no-console */
+
 import stripe from 'app/helpers/stripe';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // TODO this
 

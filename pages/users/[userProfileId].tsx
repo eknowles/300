@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/react-hooks';
+import { Alert, Button, Card, Result, Spin } from 'antd';
 import gql from 'graphql-tag';
-import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Spin, Button, Result, Alert, Card } from 'antd';
+import React from 'react';
 
 const ProfilePage: React.FC = () => {
   const router = useRouter();
@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
     }
   );
 
-  if (loading || !data) return <Spin />;
+  if (loading || !data) return <Result icon={<Spin />} />;
 
   if (error) {
     return (

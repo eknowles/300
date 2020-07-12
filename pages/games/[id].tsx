@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import React from 'react';
 import Head from 'next/head';
+import React from 'react';
 
 const GamePage: React.FC = () => (
   <>

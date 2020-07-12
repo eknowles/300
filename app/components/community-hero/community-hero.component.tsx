@@ -1,8 +1,6 @@
-import { Button, PageHeader, Typography } from 'antd';
+import { PageHeader } from 'antd';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
-import useSWR from 'swr';
 
 const itemRender = (route, params, routes) => {
   const last = routes.indexOf(route) === routes.length - 1;
