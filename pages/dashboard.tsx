@@ -13,14 +13,14 @@ const DashboardPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Dashboard</title>
+        <title>My Dashboard</title>
         <meta name="robots" content="noindex, noarchive" />
       </Head>
       {user && (
         <div className="wrapper">
           <PageHeader
             className="page-header"
-            title="Dashboard"
+            title="My Dashboard"
             extra={[
               <Button
                 key="user-profile"

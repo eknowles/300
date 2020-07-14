@@ -21,9 +21,36 @@ const { Title, Paragraph, Text } = Typography;
 const paddingSize = '200px';
 const paddingHalfSize = '60px';
 
+const variants = {
+  start: {
+    opacity: 0,
+    y: 10,
+  },
+  visible: (custom) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: custom * 0.1,
+      type: 'spring',
+      damping: 10,
+      stiffness: 100,
+    },
+  }),
+};
+
+const A = ({ children, delay = 0 }) => (
+  <motion.div
+    custom={delay}
+    initial="start"
+    animate="visible"
+    variants={variants}
+  >
+    {children}
+  </motion.div>
+);
+
 const Hero: React.FC = () => {
   const router = useRouter();
-
   return (
     <div
       className="wrapper"
@@ -35,27 +62,27 @@ const Hero: React.FC = () => {
     >
       <Row align="middle" justify="center">
         <Col md={{ span: 24 }} lg={{ span: 12 }}>
-          <Title>Community Management Software</Title>
+          <A>
+            <Title>Working Title</Title>
+          </A>
           <Space direction="vertical" size="large">
-            <Text>
-              Grow your gaming community with memberships and onboarding
-            </Text>
+            <A delay={1}>
+              <Text>
+                Grow your online community with memberships and onboarding
+              </Text>
+            </A>
             <Space size="large">
-              <Button
-                type="primary"
-                size="large"
-                shape="round"
-                icon={<ArrowRightOutlined />}
-              >
-                Get Started
-              </Button>
-              <Button
-                size="large"
-                shape="round"
-                onClick={() => router.push('/communities')}
-              >
-                Learn More
-              </Button>
+              <A delay={2}>
+                <Button
+                  type="primary"
+                  size="large"
+                  shape="round"
+                  onClick={() => router.push('/communities')}
+                  icon={<ArrowRightOutlined />}
+                >
+                  Get Started
+                </Button>
+              </A>
             </Space>
           </Space>
         </Col>
@@ -115,21 +142,18 @@ const FeatureCell: React.FC<{
   title: string;
   icon: any;
   text: React.ReactChild;
-}> = ({ title, icon, text }) => {
+  delay?: number;
+}> = ({ title, icon, text, delay = 0 }) => {
   const Icon = icon;
 
   return (
     <Col sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 8 }}>
-      <motion.div
-        initial={{ opacity: 0, translateX: 10 }}
-        animate={{ opacity: 1, translateX: 0 }}
-        transition={{ type: 'spring' }}
-      >
+      <A delay={delay}>
         <Title level={2}>
           <Space size="middle">
             <Icon
               style={{
-                background: '#1eaa0d',
+                background: 'var(--primary-color)',
                 borderRadius: '50%',
                 padding: '0.4em',
                 color: 'black',
@@ -139,7 +163,7 @@ const FeatureCell: React.FC<{
           </Space>
         </Title>
         <Paragraph>{text}</Paragraph>
-      </motion.div>
+      </A>
     </Col>
   );
 };
@@ -214,8 +238,8 @@ const FeatureTabs: React.FC = () => (
           gutter={[80, 45]}
           style={{ marginTop: paddingHalfSize }}
         >
-          {features.player.map((props) => (
-            <FeatureCell key={props.title} {...props} />
+          {features.player.map((props, index) => (
+            <FeatureCell delay={index} key={props.title} {...props} />
           ))}
         </Row>
       </TabPane>
@@ -225,8 +249,8 @@ const FeatureTabs: React.FC = () => (
           gutter={[80, 45]}
           style={{ marginTop: paddingHalfSize }}
         >
-          {features.owner.map((props) => (
-            <FeatureCell key={props.title} {...props} />
+          {features.owner.map((props, index) => (
+            <FeatureCell delay={index} key={props.title} {...props} />
           ))}
         </Row>
       </TabPane>

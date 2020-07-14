@@ -1,13 +1,18 @@
+import { Typography } from 'antd';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React from 'react';
 
-const GamePage: React.FC = () => (
+const GamePage: React.FC<any> = ({ gameSlug }) => (
   <>
     <Head>
-      <title>Game</title>
+      <title>{gameSlug}</title>
     </Head>
-    <div>game</div>
+    <div className="wrapper">
+      <Typography.Title style={{ marginTop: '30px' }}>
+        {gameSlug}
+      </Typography.Title>
+    </div>
   </>
 );
 
@@ -19,9 +24,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params;
+  const { gameSlug } = params;
 
-  return { props: { id } };
+  // todo fetch content for this game
+
+  return { props: { gameSlug } };
 };
 
 export default GamePage;

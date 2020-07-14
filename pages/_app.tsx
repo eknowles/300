@@ -31,10 +31,18 @@ const App = ({ Component, pageProps }) => {
       </Head>
       <NextNprogress
         options={{ trickleSpeed: 100 }}
-        showAfterMs={1000}
+        showAfterMs={500}
         spinner={false}
-        color="#1eaa0d"
+        color="#0c5669"
       />
+      <style jsx global>{`
+        #nprogress .spinner {
+          display: none;
+        }
+        .nprogress-custom-parent #nprogress .spinner {
+          position: absolute;
+        }
+      `}</style>
       <ApolloProvider client={apolloClient}>
         <UserContextProvider>
           <BrochureLayout>

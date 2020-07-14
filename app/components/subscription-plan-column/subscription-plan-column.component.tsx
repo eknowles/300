@@ -11,7 +11,8 @@ const SubscriptionPlanColumn = ({
   fraction,
   description,
   header,
-  benefits,
+  benefits = [],
+  interval,
   ctaText = 'Join Now',
   special = false,
 }) => {
@@ -36,8 +37,11 @@ const SubscriptionPlanColumn = ({
   };
 
   return (
-    <Card bodyStyle={{ outline: special ? '1px solid gold' : '' }}>
-      <Space direction="vertical" size="large">
+    <Card
+      hoverable
+      bodyStyle={{ outline: special ? '1px solid var(--primary-color)' : '' }}
+    >
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
         <Title level={4}>{name}</Title>
         <div
           style={{
@@ -75,7 +79,7 @@ const SubscriptionPlanColumn = ({
               display: 'inline-block',
             }}
           >
-            /month
+            /{interval}
           </span>
         </div>
         <Text>{description}</Text>
@@ -90,9 +94,11 @@ const SubscriptionPlanColumn = ({
         </Button>
         <List
           header={
-            <Text strong style={{ color: 'white' }}>
-              {header}:
-            </Text>
+            header && (
+              <Text strong style={{ color: 'white' }}>
+                {header}:
+              </Text>
+            )
           }
         >
           {benefits.map((benefit, index) => (

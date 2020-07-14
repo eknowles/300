@@ -1,4 +1,4 @@
-import { Col, PageHeader, Row, Typography } from 'antd';
+import { PageHeader, Typography } from 'antd';
 import { CommunityCard } from 'app/components/community-cards';
 import {
   getCommunities,
@@ -7,6 +7,26 @@ import {
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import React from 'react';
+import { motion } from 'framer-motion';
+
+const container = {
+  hidden: {},
+  visible: {
+    transition: {
+      delay: 0,
+      when: 'beforeChildren',
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const item = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 
 const { Title } = Typography;
 
@@ -35,9 +55,18 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
           Discover
         </Title>
         <PageHeader title="Featured" />
-        <Row gutter={[24, 24]}>
+        <motion.div variants={container} initial="hidden" animate="visible">
           {communities.map((com) => (
-            <Col key={com.id} span={6}>
+            <motion.span
+              key={com.id}
+              variants={item}
+              style={{
+                display: 'inline-block',
+                width: '300px',
+                marginRight: '20px',
+                marginBottom: '20px',
+              }}
+            >
               <CommunityCard
                 id={com.id}
                 avatarUrl={com.iconUrl}
@@ -45,9 +74,9 @@ const ActiveCommunities: React.FC<InferGetServerSidePropsType<
                 name={com.name}
                 language={com.countryCode}
               />
-            </Col>
+            </motion.span>
           ))}
-        </Row>
+        </motion.div>
       </div>
     </>
   );

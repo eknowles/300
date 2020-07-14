@@ -30,7 +30,7 @@ const UserCommunityList = () => {
 
   return (
     <List
-      header="Community Memberships"
+      header="My Memberships"
       bordered
       itemLayout="horizontal"
       dataSource={items}
