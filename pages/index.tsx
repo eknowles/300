@@ -160,6 +160,12 @@ const features = {
       text:
         'We integrate with Discord, Steam and game servers to get you on the whitelist instantly, so you&rsquo;re ready for battle.',
     },
+    {
+      icon: IdcardOutlined,
+      title: 'Profile Card',
+      text:
+        'Track your statistics, match history, awards and connections with a personalised profile page linked to your discord account.',
+    },
   ],
   owner: [
     {
