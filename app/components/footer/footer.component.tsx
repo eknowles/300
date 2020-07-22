@@ -10,9 +10,9 @@ const data = [
   {
     title: 'Featured Communities',
     links: [
-      { label: 'Your Team Here', href: '/c/yth', disabled: true },
-      { label: 'Your Team Here', href: '/c/yth', disabled: true },
-      { label: 'Your Team Here', href: '/c/yth', disabled: true },
+      { label: 'Your Team Here', href: '/1', disabled: true },
+      { label: 'Your Team Here', href: '/2', disabled: true },
+      { label: 'Your Team Here', href: '/3', disabled: true },
     ],
   },
   {

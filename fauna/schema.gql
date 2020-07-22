@@ -11,6 +11,7 @@ type Query {
   totalCommunityProfiles: Int! @resolver(name: "count_total_community_profiles")
   allUserProfiles: [UserProfile!] @index(name: "all_user_profiles")
   allCommunityProfiles: [CommunityProfile!] @index(name: "all_community_profiles")
+  permissionCanUpdateCommunity(id: ID!): Boolean! @resolver(name: "permission_can_update_community")
 }
 
 enum MembershipRole {
@@ -72,9 +73,9 @@ type Membership @collection(name: "memberships") {
   role: MembershipRole! # owner, board, director, leader, member, rookie
   customerId: String
   subscriptionId: String
-  premium: Boolean
-  active: Boolean
-  pending: Boolean
+  isPremium: Boolean
+  isActive: Boolean
+  isPending: Boolean
   createdAt: Time!
 }
 

@@ -26,6 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     headers: {
       Authorization: `Bearer ${key}`,
       'Content-Type': 'application/json',
+      'X-Schema-Preview': 'partial-update-mutation',
     },
     data: req.body,
   };

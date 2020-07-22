@@ -1,8 +1,8 @@
 import { Avatar, List, Space, Typography } from 'antd';
 import formatDate from 'app/helpers/date';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const variants = {
   start: {
@@ -24,17 +24,19 @@ const variants = {
 const { Text } = Typography;
 
 interface ICommunityMemberListProps {
+  header?: any;
   loading?: boolean;
   items: any[];
 }
 
 const CommunityMemberList: React.FC<ICommunityMemberListProps> = ({
+  header,
   items,
   loading,
 }) => {
   return (
     <List
-      header="Members"
+      header={header}
       itemLayout="horizontal"
       dataSource={items}
       loading={loading}

@@ -5,8 +5,10 @@ import CommunityMemberList from 'app/components/community-member-list';
 import CommunityPremiumPriceList from 'app/components/community-premium-price-list';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import EditableCommunityAbout from 'app/components/editable-community-about';
 
 const { Title, Paragraph } = Typography;
 
@@ -68,9 +70,29 @@ const CommunityPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Community</title>
+        <title>{data.community.name}</title>
       </Head>
-      <CommunityHero data={data.community} communityId={data.community._id} />
+      <CommunityHero
+        isLarge
+        iconUrl={data.community.iconUrl}
+        bannerUrl={data.community.bannerUrl}
+        title={data.community.name}
+        routes={[
+          {
+            path: '/',
+            breadcrumbName: 'Home',
+          },
+          {
+            path: '/communities',
+            breadcrumbName: 'Communities',
+          },
+          {
+            path: `/communities/[communityId]`,
+            as: `/communities/${communityId}`,
+            breadcrumbName: data.community.name,
+          },
+        ]}
+      />
       <motion.div
         className="wrapper"
         initial={{ opacity: 0 }}
@@ -79,16 +101,20 @@ const CommunityPage: React.FC = () => {
       >
         <Row gutter={[32, 32]}>
           <Col lg={{ span: 19 }}>
-            {data.community.aboutText && (
-              <>
-                <Title level={3}>About Us</Title>
-                <Paragraph>{data.community.aboutText}</Paragraph>
-              </>
-            )}
+            <Title level={3}>About Us</Title>
+            {communityId && <EditableCommunityAbout id={communityId} />}
             <CommunityPremiumPriceList id={data.community._id} />
           </Col>
           <Col lg={{ span: 5 }}>
             <CommunityMemberList
+              header={
+                <Link
+                  href="/communities/[communityId]/members"
+                  as={`/communities/${communityId}/members`}
+                >
+                  <a>Members</a>
+                </Link>
+              }
               items={(data?.community.memberships.data as any[]) || []}
               loading={loading}
             />

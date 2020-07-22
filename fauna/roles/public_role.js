@@ -61,5 +61,11 @@ module.exports = {
         call: true,
       },
     },
+    {
+      resource: Function('permission_can_update_community'),
+      actions: {
+        call: true,
+      },
+    },
   ],
 };

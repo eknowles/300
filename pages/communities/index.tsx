@@ -1,5 +1,5 @@
 import { PageHeader, Typography } from 'antd';
-import { CommunityCard } from 'app/components/community-cards';
+import { CommunityCard } from 'app/components/community-card';
 import {
   getCommunities,
   ICommunityModel,

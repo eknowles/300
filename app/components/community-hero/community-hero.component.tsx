@@ -7,9 +7,20 @@ const itemRender = (route, params, routes) => {
   const index = routes.indexOf(route);
   const last = index === routes.length - 1;
 
-  return last ? (
-    <span>{route.breadcrumbName}</span>
-  ) : (
+  if (last) {
+    return <span>{route.breadcrumbName}</span>;
+  }
+
+  if (route.as) {
+    return (
+      <Link href={route.path} as={route.as}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a>{route.breadcrumbName}</a>
+      </Link>
+    );
+  }
+
+  return (
     <Link href={route.path}>
       {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <a>{route.breadcrumbName}</a>
@@ -17,33 +28,28 @@ const itemRender = (route, params, routes) => {
   );
 };
 
-const CommunityHero: React.FC<any> = ({ data, communityId }) => {
-  if (!data) {
-    return null;
-  }
+export interface ICommunityHeroProps {
+  title: string;
+  bannerUrl: string;
+  iconUrl: string;
+  isLarge?: boolean;
+  routes: Array<{ path: string; breadcrumbName: string; as?: string }>;
+}
 
-  const routes = [
-    {
-      path: '/',
-      breadcrumbName: 'Home',
-    },
-    {
-      path: '/communities',
-      breadcrumbName: 'Communities',
-    },
-    {
-      path: `/communities/${communityId}`,
-      breadcrumbName: data.name,
-    },
-  ];
-
+const CommunityHero: React.FC<ICommunityHeroProps> = ({
+  title,
+  bannerUrl,
+  iconUrl,
+  isLarge,
+  routes = [],
+}) => {
   return (
     <div
       style={{
-        backgroundImage: `url('${data.bannerUrl}')`,
+        backgroundImage: `url('${bannerUrl}')`,
         backgroundPosition: 'center',
         backgroundSize: 'cover',
-        paddingTop: '8em',
+        paddingTop: isLarge ? '8em' : '1em',
         position: 'relative',
       }}
     >
@@ -55,7 +61,7 @@ const CommunityHero: React.FC<any> = ({ data, communityId }) => {
           width: '100%',
           height: '100%',
           background:
-            'linear-gradient(180deg, rgba(5,29,39,0.5) 50%, rgba(5,29,39,1) 100%)',
+            'linear-gradient(180deg, rgba(5,29,39,0.75) 0%, rgba(5,29,39,1) 100%)',
         }}
       />
       <motion.div
@@ -80,12 +86,21 @@ const CommunityHero: React.FC<any> = ({ data, communityId }) => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div style={{ fontSize: '300%', lineHeight: '1.25' }}>
-                {data.name}
+              <div
+                style={{
+                  fontSize: isLarge ? '300%' : '1em',
+                  lineHeight: '1.25',
+                }}
+              >
+                {title}
               </div>
             </motion.div>
           }
-          avatar={{ src: data.iconUrl, size: 64, shape: 'square' }}
+          avatar={{
+            src: iconUrl,
+            size: isLarge ? 64 : 'large',
+            shape: 'square',
+          }}
           breadcrumb={{ routes, itemRender }}
         />
       </div>
