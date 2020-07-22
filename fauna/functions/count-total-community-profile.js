@@ -5,6 +5,7 @@ const { Query, Lambda, Count, Paginate, Match, Index, Select } = query;
 
 module.exports = {
   name: 'count_total_community_profile',
+  role: 'admin',
   body: Query(
     Lambda(
       '_',

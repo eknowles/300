@@ -25,6 +25,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   let event;
 
+  return res.json({ received: true });
+
   try {
     event = stripe.webhooks.constructEvent(
       JSON.stringify(req.body, null, 2),

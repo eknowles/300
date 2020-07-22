@@ -16,7 +16,7 @@ const DashboardPage: React.FC = () => {
         <title>My Dashboard</title>
         <meta name="robots" content="noindex, noarchive" />
       </Head>
-      {user && (
+      {user && user._id && (
         <div className="wrapper">
           <PageHeader
             className="page-header"
@@ -33,7 +33,7 @@ const DashboardPage: React.FC = () => {
               </Button>,
             ]}
           />
-          <UserCommunityList />
+          <UserCommunityList userProfileId={user._id} />
           <ConnectCommunityBox />
         </div>
       )}

@@ -48,3 +48,21 @@ export interface IUserTokenJwt {
   userProfile: any;
   key: string;
 }
+
+// premium plans
+export interface IPremiumPrice {
+  id: string;
+  name: string;
+  currency: string;
+  product: string;
+  unitAmount: number;
+  metadata: IPremiumPriceMetadata;
+  interval: string;
+  intervalCount: number;
+}
+
+export interface IPremiumPriceMetadata {
+  isSpecial?: string;
+  benefits?: string;
+  header?: string;
+}

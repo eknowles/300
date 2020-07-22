@@ -1,12 +1,31 @@
 import { Button, Card, List, Space, Typography, message } from 'antd';
-import React, { useState } from 'react';
+import { UserContext } from 'app/contexts/user.context';
+import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
+import { loadStripe } from '@stripe/stripe-js';
 
 const { Title, Text } = Typography;
 
-const SubscriptionPlanColumn = ({
+export interface ISubscriptionPlanProps {
+  id: string;
+  name: string;
+  currency: string;
+  decimal: string;
+  integer: string;
+  fraction: string;
+  description: string;
+  header: string;
+  benefits: string[];
+  interval: string;
+  ctaText: string;
+  special?: boolean;
+}
+
+const SubscriptionPlanColumn: React.FC<ISubscriptionPlanProps> = ({
+  id,
   name,
   currency = '£',
+  decimal = '.',
   integer,
   fraction,
   description,
@@ -19,16 +38,38 @@ const SubscriptionPlanColumn = ({
   const router = useRouter();
   const [isJoining, setJoining] = useState(false);
   const { communityId } = router.query;
+  const { user } = useContext(UserContext);
 
-  const onJoin = async () => {
+  const onJoin = async (): Promise<void | boolean> => {
+    if (!user) {
+      return router.push(
+        `/api/oauth2/discord/login?redirect=/communities/${communityId}`
+      );
+    }
+
     setJoining(true);
+
+    const stripeCreateCheckoutSessionUrl = `/api/stripe/connect?action=checkout&priceId=${id}&communityProfileId=${communityId}`;
+
     try {
-      const res = await fetch(`/api/communities/${communityId}/join`, {
-        method: 'POST',
-      });
-      await res.json();
-      message.success(`Success! You have joined a community`);
-      await router.push(`/dashboard`);
+      const res = await fetch(stripeCreateCheckoutSessionUrl);
+      const response = await res.json();
+
+      if (res.status !== 200) {
+        throw new Error(response.message);
+      }
+
+      const { id: checkoutSessionId, publishableKey } = response;
+
+      const stripe = await loadStripe(publishableKey);
+
+      stripe
+        .redirectToCheckout({
+          sessionId: checkoutSessionId,
+        })
+        .then((result) => {
+          throw new Error(result.error.message);
+        });
     } catch (e) {
       message.error(e.message);
     } finally {
@@ -42,7 +83,9 @@ const SubscriptionPlanColumn = ({
       bodyStyle={{ outline: special ? '1px solid var(--primary-color)' : '' }}
     >
       <Space direction="vertical" size="large" style={{ width: '100%' }}>
-        <Title level={4}>{name}</Title>
+        <Title level={4} style={{ textTransform: 'uppercase' }}>
+          {name}
+        </Title>
         <div
           style={{
             fontSize: '64px',
@@ -69,6 +112,7 @@ const SubscriptionPlanColumn = ({
               display: 'inline-block',
             }}
           >
+            {decimal}
             {fraction}
           </span>
           <span

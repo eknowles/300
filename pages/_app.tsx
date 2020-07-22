@@ -1,5 +1,5 @@
 import { LoadingOutlined, setTwoToneColor } from '@ant-design/icons';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/client';
 import { Spin } from 'antd';
 import BrochureLayout from 'app/components/layout';
 import UserContextProvider from 'app/contexts/user.context';
@@ -7,12 +7,17 @@ import { useApollo } from 'app/helpers/with-apollo';
 import Head from 'next/head';
 import NextNprogress from 'nextjs-progressbar';
 import React from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import '../assets/antd.less';
 import '../assets/global.less';
 
 setTwoToneColor('#1eaa0d');
 
 Spin.setDefaultIndicator(<LoadingOutlined style={{ fontSize: 24 }} spin />);
+
+// loadStripe.setLoadParameters({ advancedFraudSignals: process.env.IS_PROD });
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY);
 
 const App = ({ Component, pageProps }) => {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -28,6 +33,7 @@ const App = ({ Component, pageProps }) => {
         />
         <meta name="robots" content="none" />
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://js.stripe.com/v3/" />
       </Head>
       <NextNprogress
         options={{ trickleSpeed: 100 }}
@@ -46,7 +52,9 @@ const App = ({ Component, pageProps }) => {
       <ApolloProvider client={apolloClient}>
         <UserContextProvider>
           <BrochureLayout>
-            <Component {...pageProps} />
+            <Elements stripe={stripePromise}>
+              <Component {...pageProps} />
+            </Elements>
           </BrochureLayout>
         </UserContextProvider>
       </ApolloProvider>

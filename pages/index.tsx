@@ -10,44 +10,16 @@ import {
   TrophyOutlined,
 } from '@ant-design/icons';
 import { Button, Card, Col, Row, Space, Tabs, Typography } from 'antd';
-import { motion } from 'framer-motion';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
+import MotionFadeUp from 'app/components/motion-fade-up';
 
 const { TabPane } = Tabs;
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 const paddingSize = '200px';
 const paddingHalfSize = '60px';
-
-const variants = {
-  start: {
-    opacity: 0,
-    y: 10,
-  },
-  visible: (custom) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: custom * 0.1,
-      type: 'spring',
-      damping: 10,
-      stiffness: 100,
-    },
-  }),
-};
-
-const A = ({ children, delay = 0 }) => (
-  <motion.div
-    custom={delay}
-    initial="start"
-    animate="visible"
-    variants={variants}
-  >
-    {children}
-  </motion.div>
-);
 
 const Hero: React.FC = () => {
   const router = useRouter();
@@ -62,17 +34,17 @@ const Hero: React.FC = () => {
     >
       <Row align="middle" justify="center">
         <Col md={{ span: 24 }} lg={{ span: 12 }}>
-          <A>
-            <Title>Working Title</Title>
-          </A>
+          <MotionFadeUp>
+            <Title>Play Games and Make New Friends</Title>
+          </MotionFadeUp>
           <Space direction="vertical" size="large">
-            <A delay={1}>
-              <Text>
-                Grow your online community with memberships and onboarding
-              </Text>
-            </A>
+            <MotionFadeUp delay={1}>
+              <Title level={4}>
+                Discover Online Communities For Competitive Games
+              </Title>
+            </MotionFadeUp>
             <Space size="large">
-              <A delay={2}>
+              <MotionFadeUp delay={2}>
                 <Button
                   type="primary"
                   size="large"
@@ -82,7 +54,7 @@ const Hero: React.FC = () => {
                 >
                   Get Started
                 </Button>
-              </A>
+              </MotionFadeUp>
             </Space>
           </Space>
         </Col>
@@ -148,7 +120,7 @@ const FeatureCell: React.FC<{
 
   return (
     <Col sm={{ span: 24 }} md={{ span: 12 }} lg={{ span: 8 }}>
-      <A delay={delay}>
+      <MotionFadeUp delay={delay}>
         <Title level={2}>
           <Space size="middle">
             <Icon
@@ -163,7 +135,7 @@ const FeatureCell: React.FC<{
           </Space>
         </Title>
         <Paragraph>{text}</Paragraph>
-      </A>
+      </MotionFadeUp>
     </Col>
   );
 };

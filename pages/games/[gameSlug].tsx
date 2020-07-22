@@ -1,4 +1,5 @@
 import { Typography } from 'antd';
+import InBeta from 'app/components/in-beta';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 import React from 'react';
@@ -13,6 +14,7 @@ const GamePage: React.FC<any> = ({ gameSlug }) => (
         {gameSlug}
       </Typography.Title>
     </div>
+    <InBeta />
   </>
 );
 

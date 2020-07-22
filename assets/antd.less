@@ -6,6 +6,11 @@
 
 :root {
   --primary-color: @primary-color;
+  --text-color: @text-color;
+}
+
+input {
+  color: @text-color;
 }
 
 @body-background: #051c27; // 06242b
@@ -15,6 +20,8 @@
 @layout-sider-background: @component-background;
 @layout-trigger-background: @component-background;
 @menu-dark-bg: @layout-header-background;
+@popover-background: @component-background;
+@popover-customize-border-color: @body-background;
 
 @border-color-base: #093945; // base border outline a component
 @border-color-split: #072c36; // split border inside a component
@@ -27,7 +34,7 @@
 @warning-color: #d46b07;
 @error-color: #f12222;
 @highlight-color: #494848;
-@icon-color-hover: #fadb14;
+@icon-color-hover: @primary-color;
 @heading-color: fade(@white, 85%);
 //@text-color: #ffffff;
 //@text-color-secondary: #3b817f;
@@ -56,6 +63,7 @@
 //@btn-font-weight: 600;
 @btn-primary-color: #000203;
 @btn-default-bg: transparent;
+@btn-text-shadow: none;
 @checkbox-check-color: #1b1212;
 @input-placeholder-color: fade(@white, 30%);
 @input-bg: transparent;

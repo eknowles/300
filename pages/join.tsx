@@ -2,10 +2,8 @@ import {
   Alert,
   Avatar,
   Button,
-  Col,
   List,
   PageHeader,
-  Row,
   Space,
   Typography,
 } from 'antd';
@@ -44,7 +42,6 @@ const NewCommunity: React.FC = () => {
             dataSource={data || []}
             loading={!data && !error}
             rowKey={(item) => item.id}
-            size="large"
             renderItem={(item) => (
               <List.Item
                 actions={[

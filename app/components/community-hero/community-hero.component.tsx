@@ -1,7 +1,7 @@
-import { PageHeader, Space } from 'antd';
+import { PageHeader } from 'antd';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const itemRender = (route, params, routes) => {
   const index = routes.indexOf(route);
@@ -17,7 +17,7 @@ const itemRender = (route, params, routes) => {
   );
 };
 
-const CommunityHero = ({ data, communityId }) => {
+const CommunityHero: React.FC<any> = ({ data, communityId }) => {
   if (!data) {
     return null;
   }
@@ -55,7 +55,7 @@ const CommunityHero = ({ data, communityId }) => {
           width: '100%',
           height: '100%',
           background:
-            'linear-gradient(180deg, rgba(5,29,39,0.5) 0%, rgba(5,29,39,1) 100%)',
+            'linear-gradient(180deg, rgba(5,29,39,0.5) 50%, rgba(5,29,39,1) 100%)',
         }}
       />
       <motion.div

@@ -1,8 +1,7 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, gql } from '@apollo/client';
 import { PageHeader, Result, Spin } from 'antd';
 import CommunityAdminDashboard from 'app/components/community-admin-dashboard';
 import CommunitySetup from 'app/components/community-setup';
-import gql from 'graphql-tag';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

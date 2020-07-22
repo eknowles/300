@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import { Typography } from 'antd';
+import InBeta from 'app/components/in-beta';
 
 const GamesPage: React.FC = () => (
   <>
@@ -12,6 +13,7 @@ const GamesPage: React.FC = () => (
         Supported Games
       </Typography.Title>
     </div>
+    <InBeta />
   </>
 );
 

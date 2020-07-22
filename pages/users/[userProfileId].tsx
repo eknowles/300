@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/react-hooks';
-import { Alert, Button, Card, Result, Spin } from 'antd';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
+import { Button, Result, Spin } from 'antd';
+import InBeta from 'app/components/in-beta';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -13,8 +13,6 @@ const ProfilePage: React.FC = () => {
       query UserProfilePage($userProfileId: ID!) {
         profile: findUserProfileByID(id: $userProfileId) {
           username
-          avatarUrl
-          localeCode
         }
       }
     `,
@@ -58,11 +56,7 @@ const ProfilePage: React.FC = () => {
       <Head>
         <title>{data.profile.username}</title>
       </Head>
-      <Card bordered={false}>
-        <div className="wrapper">
-          <Alert message="User profiles coming soon" banner />
-        </div>
-      </Card>
+      <InBeta />
     </>
   );
 };

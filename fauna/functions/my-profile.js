@@ -5,6 +5,7 @@ const { Query, If, HasIdentity, Get, Identity, Select, Lambda } = query;
 
 module.exports = {
   name: 'my_profile',
+  role: 'admin',
   body: Query(
     Lambda(
       '_',

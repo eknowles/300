@@ -16,6 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       stripeTokenResponse = await stripe.oauth.token({
         grant_type: 'authorization_code',
         code: req.query.code as string,
+        assert_capabilities: ['transfers', 'card_payments'] as any,
       });
     } catch (e) {
       res.writeHead(302, {
@@ -152,9 +153,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
         process.env.JWT_SECRET
       ),
+      suggested_capabilities: ['transfers', 'card_payments'],
       stripe_user: {
         email,
-        url: `300.team/communitites/${communityId}/join`,
+        url: `300.team/communitites/${communityId}`,
         business_type: businessType,
         business_name: businessName,
         country,

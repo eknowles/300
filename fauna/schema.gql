@@ -70,6 +70,11 @@ type Membership @collection(name: "memberships") {
   userProfile: UserProfile! @relation(name: "user_profile_memberships")
   communityProfile: CommunityProfile! @relation(name: "community_profile_membership")
   role: MembershipRole! # owner, board, director, leader, member, rookie
+  customerId: String
+  subscriptionId: String
+  premium: Boolean
+  active: Boolean
+  pending: Boolean
   createdAt: Time!
 }
 
@@ -86,6 +91,7 @@ type CommunityProfile @collection(name: "community_profiles") {
   name: String!
   tag: String
   region: String! # EU, NA, OC
+  aboutText: String
   countryCode: String
   localeCode: String
   iconUrl: String

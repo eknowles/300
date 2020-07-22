@@ -1,30 +1,23 @@
-import { useQuery } from '@apollo/react-hooks';
-import { Avatar, List } from 'antd';
+import { useQuery } from '@apollo/client';
+import { Avatar, List, message } from 'antd';
 import formatDate from 'app/helpers/date';
-import gql from 'graphql-tag';
 import Link from 'next/link';
 import React from 'react';
+import MEMBERSHIPS_LIST from './membership-list.query';
 
-const MY_COMMUNITY_LIST = gql`
-  query MyCommunityList {
-    profile: myProfile {
-      memberships {
-        data {
-          role
-          createdAt
-          communityProfile {
-            _id
-            name
-            iconUrl
-          }
-        }
-      }
-    }
+const UserCommunityList: React.FC<{ userProfileId: string }> = ({
+  userProfileId,
+}) => {
+  const { loading, data, error } = useQuery(MEMBERSHIPS_LIST, {
+    variables: {
+      userProfileId,
+    },
+    displayName: 'communityProfiles',
+  });
+
+  if (error) {
+    message.error(error && error.message);
   }
-`;
-
-const UserCommunityList = () => {
-  const { loading, data } = useQuery(MY_COMMUNITY_LIST);
 
   const items = data ? (data.profile.memberships?.data as any[]) : [];
 

@@ -10,8 +10,8 @@ const data = [
   {
     title: 'Featured Communities',
     links: [
-      { label: 'Team Hyphen', href: '/c/team-hyphen', disabled: true },
-      { label: 'Fighting Furies', href: '/c/ffuk', disabled: true },
+      { label: 'Your Team Here', href: '/c/yth', disabled: true },
+      { label: 'Your Team Here', href: '/c/yth', disabled: true },
       { label: 'Your Team Here', href: '/c/yth', disabled: true },
     ],
   },

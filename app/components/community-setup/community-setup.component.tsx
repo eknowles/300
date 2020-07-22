@@ -1,8 +1,8 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { Card, Steps, Typography, Space, Row, Col } from 'antd';
 import StripeAccountCreateForm from './stripe-create-account-form';
+import COMMUNITY_SETUP from './community-setup.query';
 
 const { Step } = Steps;
 const { Text, Title } = Typography;
@@ -13,23 +13,9 @@ interface IProps {
 }
 
 const CommunitySetup: React.FC<IProps> = ({ communityId }) => {
-  const { loading, data, error } = useQuery(
-    gql`
-      query CommunitySetup($communityId: ID!) {
-        community: findCommunityProfileByID(id: $communityId) {
-          name
-          communityAccount {
-            ownerAccount {
-              email
-            }
-          }
-        }
-      }
-    `,
-    {
-      variables: { communityId },
-    }
-  );
+  const { loading, data, error } = useQuery(COMMUNITY_SETUP, {
+    variables: { communityId },
+  });
 
   if (loading || error || !data) {
     return null;
