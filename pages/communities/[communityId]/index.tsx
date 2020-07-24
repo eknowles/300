@@ -3,14 +3,15 @@ import { Col, Result, Row, Spin, Typography } from 'antd';
 import CommunityHero from 'app/components/community-hero';
 import CommunityMemberList from 'app/components/community-member-list';
 import CommunityPremiumPriceList from 'app/components/community-premium-price-list';
+import EditableCommunityAbout from 'app/components/editable-community-about';
+import JoinCommunityFree from 'app/components/join-community-free';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import EditableCommunityAbout from 'app/components/editable-community-about';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 // export const getServerSideProps: GetServerSideProps<
 //   { data: ICommunityModel; communityId: string },
@@ -118,6 +119,7 @@ const CommunityPage: React.FC = () => {
               items={(data?.community.memberships.data as any[]) || []}
               loading={loading}
             />
+            <JoinCommunityFree id={communityId} />
           </Col>
         </Row>
       </motion.div>

@@ -14,6 +14,10 @@ type Query {
   permissionCanUpdateCommunity(id: ID!): Boolean! @resolver(name: "permission_can_update_community")
 }
 
+type Mutation {
+  joinCommunity(communityProfileID: ID!): Membership @resolver(name: "join_community_mutation")
+}
+
 enum MembershipRole {
   OWNER
   BOARD

@@ -36,6 +36,7 @@ const CommunityMemberList: React.FC<ICommunityMemberListProps> = ({
 }) => {
   return (
     <List
+      style={{ marginBottom: '1em' }}
       header={header}
       itemLayout="horizontal"
       dataSource={items}

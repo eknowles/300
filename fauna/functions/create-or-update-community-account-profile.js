@@ -96,6 +96,8 @@ module.exports = {
                   {
                     data: {
                       name: Select(['guild', 'name'], Var('input')),
+                      aboutText:
+                        'Placeholder. To be edited by community owner.',
                       region: 'EU',
                       countryCode: 'GB',
                       localeCode: 'EN',

@@ -44,6 +44,12 @@ module.exports = {
       },
     },
     {
+      resource: Function('join_community_mutation'),
+      actions: {
+        call: true,
+      },
+    },
+    {
       resource: Collection('community_profiles'),
       actions: {
         write: OnlyCommunityOwnerCanUpdate,
