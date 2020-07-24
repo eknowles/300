@@ -23,6 +23,9 @@ const defaultBannerUrl =
 const defaultSplashUrl =
   'https://images.unsplash.com/photo-1502444330042-d1a1ddf9bb5b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2253&q=80';
 
+const defaultPremiumText =
+  'If you would like to help us pay for servers you can become a premium member. We offer private squad training so you are up to scratch with our tactical war plans and leadership lingo. Take part in massive 50 vs 50 community matches, and jump the queue when joining our servers with a VIP server slot with your name on it.';
+
 module.exports = {
   name: 'create_or_update_community_account_profile',
   body: Query(
@@ -98,6 +101,7 @@ module.exports = {
                       name: Select(['guild', 'name'], Var('input')),
                       aboutText:
                         'Placeholder. To be edited by community owner.',
+                      premiumText: defaultPremiumText,
                       region: 'EU',
                       countryCode: 'GB',
                       localeCode: 'EN',

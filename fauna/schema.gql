@@ -97,6 +97,7 @@ type CommunityProfile @collection(name: "community_profiles") {
   tag: String
   region: String! # EU, NA, OC
   aboutText: String
+  premiumText: String
   countryCode: String
   localeCode: String
   iconUrl: String

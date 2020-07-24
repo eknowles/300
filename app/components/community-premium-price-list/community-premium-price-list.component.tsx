@@ -4,6 +4,7 @@ import { IPremiumPrice } from 'app/helpers/types';
 import React from 'react';
 import useSWR from 'swr';
 import { ISubscriptionPlanProps } from '../subscription-plan-column/subscription-plan-column.component';
+import EditableCommunityPremium from '../editable-community-premium';
 
 const { Title, Paragraph } = Typography;
 
@@ -73,13 +74,7 @@ const CommunityPremiumPriceList: React.FC<{ id: string }> = ({ id }) => {
     <Row gutter={[32, 32]}>
       <Col span={24}>
         <Title level={3}>Premium Membership</Title>
-        <Paragraph>
-          If you would like to help us pay for servers you can become a premium
-          member. We offer private squad training so you are up to scratch with
-          our tactical war plans and leadership lingo. Take part in massive 50
-          vs 50 community matches, and jump the queue when joining our servers
-          with a VIP server slot with your name on it.
-        </Paragraph>
+        <EditableCommunityPremium id={id} />
       </Col>
       {cleanPrices(data || []).map((plan) => (
         <Col key={plan.name} sm={{ span: 12 }} md={{ span: 8 }} span={24}>
