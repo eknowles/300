@@ -101,12 +101,12 @@ const CommunityPage: React.FC = () => {
         transition={{ duration: 0.75 }}
       >
         <Row gutter={[32, 32]}>
-          <Col lg={{ span: 19 }}>
+          <Col lg={{ span: 19 }} span={24}>
             <Title level={3}>About Us</Title>
             {communityId && <EditableCommunityAbout id={communityId} />}
             <CommunityPremiumPriceList id={data.community._id} />
           </Col>
-          <Col lg={{ span: 5 }}>
+          <Col lg={{ span: 5 }} span={24}>
             <CommunityMemberList
               header={
                 <Link

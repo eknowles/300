@@ -19,7 +19,7 @@ const UserCommunityList: React.FC<{ userProfileId: string }> = ({
     message.error(error && error.message);
   }
 
-  const items = data ? (data.profile.memberships?.data as any[]) : [];
+  const items = data ? (data.profile?.memberships.data as any[]) : [];
 
   return (
     <List

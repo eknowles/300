@@ -10,7 +10,6 @@ const {
   Var,
   Delete,
   Functions,
-  Roles,
   Collections,
   Indexes,
 } = query;

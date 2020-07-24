@@ -1,10 +1,9 @@
 import { getUserToken } from 'app/helpers/api';
 import { client, q } from 'app/helpers/fauna-client';
+import stripe from 'app/helpers/stripe';
+import jwt from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import qs from 'qs';
-import jwt from 'jsonwebtoken';
-
-import stripe from 'app/helpers/stripe';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -44,9 +43,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     // store stripe tokens in db
-    await client.query(
+    const dbResponse = await client.query<{
+      communityProfileIconUrl: string;
+      communityAccount: any;
+    }>(
       q.Let(
         {
+          communityProfile: q.Get(
+            q.Ref(
+              q.Collection('community_profiles'),
+              callbackStateDecodedJwt.communityProfileId
+            )
+          ),
           createdStripeAccountToken: q.Create(
             q.Collection('stripe_account_tokens'),
             {
@@ -71,8 +79,80 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         },
         {
           communityAccount: q.Var('updatedCommunityAccount'),
+          communityProfileIconUrl: q.Select(
+            ['data', 'iconUrl'],
+            q.Var('communityProfile')
+          ),
         }
       )
+    );
+
+    // create placeholder products
+    const premiumProduct = await stripe.products.create(
+      {
+        name: 'Premium',
+        images: [dbResponse.communityProfileIconUrl],
+      },
+      { stripeAccount: stripeTokenResponse.stripe_user_id }
+    );
+
+    await stripe.prices.create(
+      {
+        nickname: 'Bronze',
+        product: premiumProduct.id,
+        unit_amount: 999,
+        currency: 'gbp',
+        recurring: {
+          interval: 'month',
+          interval_count: 3,
+        },
+        metadata: {
+          header: 'Includes:',
+          benefits:
+            'Bronze Discord Role,VIP Server Slot,Private Training Sessions,Competition Slot',
+          addRole: 'Premium,Bronze',
+        },
+      },
+      { stripeAccount: stripeTokenResponse.stripe_user_id }
+    );
+
+    await stripe.prices.create(
+      {
+        nickname: 'Silver',
+        product: premiumProduct.id,
+        unit_amount: 1999,
+        currency: 'gbp',
+        recurring: {
+          interval: 'month',
+          interval_count: 6,
+        },
+        metadata: {
+          header: 'BRONZE Plus:',
+          benefits: 'Silver Discord Role',
+          addDiscordRole: 'Premium,Silver',
+          isSpecial: 'true',
+        },
+      },
+      { stripeAccount: stripeTokenResponse.stripe_user_id }
+    );
+
+    await stripe.prices.create(
+      {
+        nickname: 'Gold',
+        product: premiumProduct.id,
+        unit_amount: 3999,
+        currency: 'gbp',
+        recurring: {
+          interval: 'year',
+          interval_count: 1,
+        },
+        metadata: {
+          header: 'SILVER Plus:',
+          benefits: 'Gold Discord Role,Undying Love and Respect',
+          addDiscordRole: 'Premium,Gold',
+        },
+      },
+      { stripeAccount: stripeTokenResponse.stripe_user_id }
     );
 
     res.writeHead(302, {

@@ -40,7 +40,8 @@ const SubscriptionPlanColumn: React.FC<ISubscriptionPlanProps> = ({
   const { communityId } = router.query;
   const { user } = useContext(UserContext);
 
-  const onJoin = async (): Promise<void | boolean> => {
+  // eslint-disable-next-line consistent-return
+  const onJoin = async () => {
     if (!user) {
       return router.push(
         `/api/oauth2/discord/login?redirect=/communities/${communityId}`
@@ -140,7 +141,7 @@ const SubscriptionPlanColumn: React.FC<ISubscriptionPlanProps> = ({
           header={
             header && (
               <Text strong style={{ color: 'white' }}>
-                {header}:
+                {header}
               </Text>
             )
           }
