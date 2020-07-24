@@ -24,13 +24,10 @@ const createCheckoutSession = async (
   }>(
     q.Let(
       {
-        membership: q.Get(
-          q.Match(
-            q.Index('community_user_membership'),
-            q.Ref(q.Collection('user_profiles'), token.userProfileId),
-            q.Ref(q.Collection('community_profiles'), communityProfileId)
-          )
-        ),
+        membership: q.Call(q.Function('join_community'), [
+          token.userProfileId,
+          communityProfileId,
+        ]),
         userAccount: q.Get(
           q.Ref(q.Collection('user_accounts'), token.userAccountId)
         ),
@@ -73,8 +70,10 @@ const createCheckoutSession = async (
   // if membership has been found use customerId
   if (stripeIds.membership.data.customerId) {
     // if user is already a premium member, they should not be able to buy a new subscription
-    if (stripeIds.membership.data.premium) {
-      return res.status(400).json({ message: 'You already have Premium' });
+    if (stripeIds.membership.data.isPremium) {
+      return res
+        .status(400)
+        .json({ message: 'You already have a Premium membership' });
     }
 
     // update session to use existing customer
@@ -97,6 +96,7 @@ const createCheckoutSession = async (
       subscription_data: {
         application_fee_percent: 10,
         metadata: {
+          membershipId: stripeIds.membership.ref.id,
           userDiscordId: token.discordId,
           userProfileId: token.userProfileId,
           communityProfileId: communityProfileId as string,

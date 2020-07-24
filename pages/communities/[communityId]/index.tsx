@@ -45,6 +45,7 @@ const CommunityPage: React.FC = () => {
             data {
               role
               createdAt
+              isPremium
               userProfile {
                 _id
                 username
@@ -119,7 +120,7 @@ const CommunityPage: React.FC = () => {
               items={(data?.community.memberships.data as any[]) || []}
               loading={loading}
             />
-            <JoinCommunityFree id={communityId} />
+            <JoinCommunityFree id={communityId as string} />
           </Col>
         </Row>
       </motion.div>

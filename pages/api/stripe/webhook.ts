@@ -1,9 +1,15 @@
 /* eslint-disable no-console */
-
 import stripe from 'app/helpers/stripe';
+import { buffer } from 'micro';
+import Cors from 'micro-cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-
-// TODO this
+import Stripe from 'stripe';
+import {
+  connectCustomerCreated,
+  connectCustomerSubscriptionCreated,
+  connectCustomerSubscriptionUpdated,
+  connectCustomerSubscriptionDeleted,
+} from 'app/functions/stripe/webhooks';
 
 // https://stripe.com/docs/connect/webhooks
 // account.application.deauthorized - Occurs when a user disconnects from your account and can be used to trigger required cleanup on your server. Available for Standard accounts.
@@ -14,49 +20,62 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // account.external_account.updated - Occurs when a bank account or debit card attached to a connected account is updated, which can impact payouts. Available for Express and Custom accounts.
 // payout.failed - 	Occurs when a payout fails. When a payout fails, the external account involved will be disabled, and no automatic or manual payouts can go through until the external account is updated. Available for Express and Custom accounts.
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
+
+const cors = Cors({
+  allowMethods: ['POST', 'HEAD'],
+});
+
+// Stripe requires the raw body to construct the event.
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (process.env.isProd && !req.body.livemode) {
     // ignore test cases on prod
     return res.json({ received: true });
   }
 
-  const sig = req.headers['stripe-signature'];
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const sig = req.headers['stripe-signature']!;
+  const buf = await buffer(req);
 
-  let event;
-
-  return res.json({ received: true });
+  let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      JSON.stringify(req.body, null, 2),
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
+    event = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
   } catch (err) {
+    // On error, log and return the error message
+    console.log(`❌ Error message: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  console.log(event);
-
-  return res.json({ received: true });
-
   // Handle the event
   switch (event.type) {
-    case 'payment_intent.succeeded':
-      console.log('PaymentIntent was successful!');
+    case 'customer.created':
+      await connectCustomerCreated(event);
       break;
-    case 'payment_method.attached':
-      console.log('PaymentMethod was attached to a Customer!');
+    case 'customer.subscription.created':
+      await connectCustomerSubscriptionCreated(event);
       break;
-    // ... handle other event types
+    case 'customer.subscription.updated':
+      await connectCustomerSubscriptionUpdated(event);
+      break;
+    case 'customer.subscription.deleted':
+      await connectCustomerSubscriptionDeleted(event);
+      break;
     default:
-      console.log(event);
       // Unexpected event type
       return res.json({ received: true });
-    // return res.status(400).end();
   }
 
   // Return a response to acknowledge receipt of the event
   return res.json({ received: true });
 };
+
+export default cors(webhookHandler as any);

@@ -3,6 +3,7 @@ import formatDate from 'app/helpers/date';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import React from 'react';
+import { SafetyOutlined } from '@ant-design/icons';
 
 const variants = {
   start: {
@@ -59,14 +60,17 @@ const CommunityMemberList: React.FC<ICommunityMemberListProps> = ({
                 animate="visible"
                 variants={variants}
               >
-                <Link
-                  href="/users/[userProfileId]"
-                  as={`/users/${item.userProfile._id}`}
-                >
-                  <a style={{ fontSize: '15px', fontWeight: 'bold' }}>
-                    {item.userProfile.username}
-                  </a>
-                </Link>
+                <Space>
+                  <Link
+                    href="/users/[userProfileId]"
+                    as={`/users/${item.userProfile._id}`}
+                  >
+                    <a style={{ fontSize: '15px', fontWeight: 'bold' }}>
+                      {item.userProfile.username}
+                    </a>
+                  </Link>
+                  {item.isPremium ? <SafetyOutlined /> : null}
+                </Space>
               </motion.div>
               <motion.div
                 custom={index + 0.4}
