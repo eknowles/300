@@ -1,6 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { message, Typography } from 'antd';
 import React from 'react';
+import MotionFadeIn from '../motion-fade-in';
 
 const { Paragraph } = Typography;
 
@@ -53,9 +54,11 @@ const EditableCommunityPremium: React.FC<any> = ({ id }) => {
   }
 
   return (
-    <Paragraph {...paragraphProps}>
-      {data?.community.premiumText || 'none'}
-    </Paragraph>
+    <MotionFadeIn>
+      <Paragraph {...paragraphProps}>
+        {data?.community.premiumText || 'none'}
+      </Paragraph>
+    </MotionFadeIn>
   );
 };
 

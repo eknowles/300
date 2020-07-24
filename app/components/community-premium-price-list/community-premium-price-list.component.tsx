@@ -1,12 +1,13 @@
-import { Col, Divider, Row, Typography } from 'antd';
+import { Col, Row, Typography } from 'antd';
+import MotionFadeIn from 'app/components/motion-fade-in';
 import SubscriptionPlanColumn from 'app/components/subscription-plan-column';
 import { IPremiumPrice } from 'app/helpers/types';
 import React from 'react';
 import useSWR from 'swr';
-import { ISubscriptionPlanProps } from '../subscription-plan-column/subscription-plan-column.component';
 import EditableCommunityPremium from '../editable-community-premium';
+import { ISubscriptionPlanProps } from '../subscription-plan-column/subscription-plan-column.component';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 const intervalFormatter = (interval: string, count: number) => {
   if (count === 1) {
@@ -76,9 +77,11 @@ const CommunityPremiumPriceList: React.FC<{ id: string }> = ({ id }) => {
         <Title level={3}>Premium Membership</Title>
         <EditableCommunityPremium id={id} />
       </Col>
-      {cleanPrices(data || []).map((plan) => (
+      {cleanPrices(data || []).map((plan, index) => (
         <Col key={plan.name} sm={{ span: 12 }} md={{ span: 8 }} span={24}>
-          <SubscriptionPlanColumn {...plan} />
+          <MotionFadeIn delay={index}>
+            <SubscriptionPlanColumn {...plan} />
+          </MotionFadeIn>
         </Col>
       ))}
     </Row>
