@@ -23,8 +23,6 @@ const UserCommunityList: React.FC<{ userProfileId: string }> = ({
 
   return (
     <List
-      header="My Memberships"
-      bordered
       itemLayout="horizontal"
       dataSource={items}
       loading={loading}

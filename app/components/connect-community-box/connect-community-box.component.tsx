@@ -1,4 +1,4 @@
-import { Button, Col, Row, Typography } from 'antd';
+import { Button, Col, Row, Typography, Card } from 'antd';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -21,20 +21,22 @@ const ConnectCommunityBox: React.FC = () => {
               damping: 20,
             }}
           >
-            <Title level={4}>Connect your Community</Title>
-            <Paragraph>
-              Create subscriptions to support your growth and pay for services
-              like game servers and hosting. As a platform we can help you
-              manage your organisation, grow your membership and automate
-              onboarding, allocating benefits and more.
-            </Paragraph>
-            <Paragraph>
-              Our mission is to help small and medium sized communities grow
-              their membership and become self supporting.
-            </Paragraph>
-            <Button type="primary" onClick={() => router.push('/join')}>
-              Invite Discord Bot
-            </Button>
+            <Card>
+              <Title level={4}>Connect your Community</Title>
+              <Paragraph>
+                Create subscriptions to support your growth and pay for services
+                like game servers and hosting. As a platform we can help you
+                manage your organisation, grow your membership and automate
+                onboarding, allocating benefits and more.
+              </Paragraph>
+              <Paragraph>
+                Our mission is to help small and medium sized communities grow
+                their membership and become self supporting.
+              </Paragraph>
+              <Button type="primary" onClick={() => router.push('/join')}>
+                Invite Discord Bot
+              </Button>
+            </Card>
           </motion.div>
         </div>
       </Col>

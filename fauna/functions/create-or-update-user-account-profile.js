@@ -20,6 +20,7 @@ const {
 
 module.exports = {
   name: 'create_or_update_user_account_profile',
+  role: 'admin',
   body: Query(
     Lambda(
       'input',

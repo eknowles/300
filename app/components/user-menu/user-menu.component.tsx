@@ -1,26 +1,45 @@
-import { Avatar, Space, Menu } from 'antd';
+import { Avatar, Menu } from 'antd';
+import { UserContext } from 'app/contexts/user.context';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
-import { UserContext } from 'app/contexts/user.context';
+
+const { SubMenu } = Menu;
 
 const UserMenu: React.FC = () => {
   const router = useRouter();
   const {
-    user: { username, avatarUrl },
+    logout,
+    user: { username, avatarUrl, _id },
   } = useContext(UserContext);
 
   return (
     <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
-      <Menu.Item
-        title="Go to Dashboard"
-        key="dashboard"
-        onClick={() => router.push('/dashboard')}
+      <SubMenu
+        icon={
+          <Avatar src={avatarUrl} style={{ marginRight: '0.75em' }}>
+            {username[0]}
+          </Avatar>
+        }
+        title={username}
       >
-        <Space>
-          {username}
-          <Avatar src={avatarUrl}>{username[0]}</Avatar>
-        </Space>
-      </Menu.Item>
+        <Menu.Item key="dashboard" onClick={() => router.push('/dashboard')}>
+          Dashboard
+        </Menu.Item>
+        <Menu.Item key="profile" onClick={() => router.push(`/users/${_id}`)}>
+          Profile
+        </Menu.Item>
+        <Menu.Item
+          key="billing"
+          onClick={() =>
+            router.push(`/api/stripe/connect?action=openBillingPortal`)
+          }
+        >
+          Billing
+        </Menu.Item>
+        <Menu.Item key="logout" onClick={() => logout()}>
+          Logout
+        </Menu.Item>
+      </SubMenu>
     </Menu>
   );
 };

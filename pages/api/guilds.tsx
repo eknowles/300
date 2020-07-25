@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Response>) => {
   const token = getUserToken(req);
 
   if (!token) {
-    return res.status(401).json({ message: 'Invalid Token' });
+    return res.status(401).json({ message: 'Missing or Invalid Token' });
   }
 
   let guilds = [];
@@ -21,7 +21,8 @@ export default async (req: NextApiRequest, res: NextApiResponse<Response>) => {
 
     guilds = await getUserGuilds(discordToken);
   } catch (e) {
-    return res.status(401).json({ message: 'Invalid Token' });
+    console.log(e);
+    return res.json([]);
   }
 
   const ownedGuilds = guilds

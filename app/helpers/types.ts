@@ -32,7 +32,7 @@ export interface IDiscordGuild {
 export interface IUserAccount {
   email: string;
   discordId: string;
-  discordToken: any;
+  discordToken?: any;
 }
 
 export interface IUserProfile {

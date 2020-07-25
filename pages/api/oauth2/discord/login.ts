@@ -58,9 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       localeCode,
     };
 
-    const input = { userAccount, userProfile, discordToken };
-
-    const dbRes = await faunaAuth(input);
+    const dbRes = await faunaAuth({ userAccount, userProfile, discordToken });
 
     // For new accounts, create a Stripe Customer
     if (dbRes.created) {

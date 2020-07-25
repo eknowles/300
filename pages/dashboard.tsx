@@ -1,14 +1,14 @@
-import { Button, PageHeader } from 'antd';
+import { PageHeader, Typography } from 'antd';
 import ConnectCommunityBox from 'app/components/connect-community-box';
 import UserCommunityList from 'app/components/user-community-list';
 import { UserContext } from 'app/contexts/user.context';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 
+const { Title } = Typography;
+
 const DashboardPage: React.FC = () => {
-  const router = useRouter();
-  const { logout, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   return (
     <>
@@ -18,22 +18,12 @@ const DashboardPage: React.FC = () => {
       </Head>
       {user && user._id && (
         <div className="wrapper">
-          <PageHeader
-            className="page-header"
-            title="My Dashboard"
-            extra={[
-              <Button
-                key="user-profile"
-                onClick={() => router.push(`/users/${user._id}`)}
-              >
-                My Profile
-              </Button>,
-              <Button key="logout" onClick={() => logout()}>
-                Log out
-              </Button>,
-            ]}
-          />
-          <UserCommunityList userProfileId={user._id} />
+          <Title level={1} style={{ marginTop: 30 }}>
+            Dashboard
+          </Title>
+          <PageHeader className="page-header" title="Memberships">
+            <UserCommunityList userProfileId={user._id} />
+          </PageHeader>
           <ConnectCommunityBox />
         </div>
       )}
