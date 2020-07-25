@@ -32,6 +32,10 @@ const CommunityPage: React.FC = () => {
   const router = useRouter();
   const { communityId } = router.query;
 
+  if (!communityId) {
+    return null;
+  }
+
   const { loading, data, error } = useQuery(
     gql`
       query CommunityProfileQuery($communityId: ID!) {

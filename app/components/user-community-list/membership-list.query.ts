@@ -7,6 +7,9 @@ const MEMBERSHIPS_LIST = gql`
         data {
           role
           createdAt
+          isPremium
+          subscriptionId
+          customerId
           communityProfile {
             _id
             name

@@ -89,7 +89,7 @@ const CommunityAdmin: React.FC = () => {
       </Head>
       <div className="wrapper">
         <PageHeader
-          avatar={{ src: community.iconUrl }}
+          avatar={{ src: community.iconUrl, shape: 'square' }}
           title={community.name}
           breadcrumb={{ routes, itemRender }}
         />

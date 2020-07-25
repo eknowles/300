@@ -10,17 +10,9 @@ const connectCustomerSubscriptionCreated = async (event: Stripe.Event) => {
 
   // set subscription on membership
   await client.query(
-    q.Let(
-      {
-        membership: q.Get(q.Ref(q.Collection('memberships'), membershipId)),
-        updatedMembership: q.Update(q.Select(['ref'], q.Var('membership')), {
-          data: {}, // todo all hooks happen at once, we need to think of a way to enter into a queue at a time
-        }),
-      },
-      {
-        membership: q.Var('updatedMembership'),
-      }
-    )
+    q.Update(q.Ref(q.Collection('memberships'), membershipId), {
+      data: {}, // todo all hooks happen at once, we need to think of a way to enter into a queue at a time
+    })
   );
 };
 

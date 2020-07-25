@@ -8,11 +8,23 @@ const { Text } = Typography;
 
 const data = [
   {
-    title: 'Featured Communities',
+    title: 'About',
     links: [
-      { label: 'Your Team Here', href: '/1', disabled: true },
-      { label: 'Your Team Here', href: '/2', disabled: true },
-      { label: 'Your Team Here', href: '/3', disabled: true },
+      {
+        label: 'Support',
+        href: '/support',
+        disabled: false,
+      },
+      {
+        label: 'Terms and Conditions',
+        href: '/terms',
+        disabled: false,
+      },
+      {
+        label: 'Privacy Policy',
+        href: '/privacy',
+        disabled: false,
+      },
     ],
   },
   {
@@ -28,19 +40,11 @@ const data = [
     ],
   },
   {
-    title: 'About 300.team',
+    title: 'Featured Communities',
     links: [
-      {
-        label: 'For Community Owners',
-        href: '/community-owners',
-        disabled: true,
-      },
-      { label: 'For Players', href: '/for-players', disabled: true },
-      {
-        label: 'For Server Hosting Companies',
-        href: '/server-hosting-companies',
-        disabled: true,
-      },
+      { label: 'Your Team Here', href: '/1', disabled: true },
+      { label: 'Your Team Here', href: '/2', disabled: true },
+      { label: 'Your Team Here', href: '/3', disabled: true },
     ],
   },
   {

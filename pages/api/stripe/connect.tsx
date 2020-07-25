@@ -4,6 +4,7 @@ import redirectToLogin from 'app/functions/stripe/redirect-to-login';
 import { getUserToken } from 'app/helpers/api';
 import { NextApiRequest, NextApiResponse } from 'next';
 import openBillingPortal from 'app/functions/stripe/open-billing-portal';
+import getAccountBalance from 'app/functions/stripe/get-account-balance';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,6 +17,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.query.action === 'prices') {
     return listPrices(token, req, res);
+  }
+
+  if (req.query.action === 'accountBalance') {
+    return getAccountBalance(token, req, res);
   }
 
   if (req.query.action === 'checkout') {

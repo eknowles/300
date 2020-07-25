@@ -10,20 +10,12 @@ const connectCustomerSubscriptionDeleted = async (event: Stripe.Event) => {
   console.info(`[membership] stop premium ${membershipId}`);
 
   await client.query(
-    q.Let(
-      {
-        membership: q.Get(q.Ref(q.Collection('memberships'), membershipId)),
-        updatedMembership: q.Update(q.Select(['ref'], q.Var('membership')), {
-          data: {
-            isPremium: false,
-            subscriptionId: null,
-          },
-        }),
+    q.Update(q.Ref(q.Collection('memberships'), membershipId), {
+      data: {
+        isPremium: false,
+        subscriptionId: null,
       },
-      {
-        membership: q.Var('updatedMembership'),
-      }
-    )
+    })
   );
 };
 

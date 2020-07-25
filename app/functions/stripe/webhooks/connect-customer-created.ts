@@ -15,17 +15,9 @@ const connectCustomerCreated = async (event: Stripe.Event) => {
   const { membershipId } = sub.metadata;
 
   await client.query(
-    q.Let(
-      {
-        membership: q.Get(q.Ref(q.Collection('memberships'), membershipId)),
-        updatedMembership: q.Update(q.Select(['ref'], q.Var('membership')), {
-          data: { customerId: object.id },
-        }),
-      },
-      {
-        membershipObject: q.Var('updatedMembership'),
-      }
-    )
+    q.Update(q.Ref(q.Collection('memberships'), membershipId), {
+      data: { customerId: object.id },
+    })
   );
 };
 

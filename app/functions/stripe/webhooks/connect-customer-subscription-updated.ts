@@ -26,17 +26,9 @@ const connectCustomerSubscriptionUpdated = async (event: Stripe.Event) => {
   // set subscription on membership
   // @link https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses
   await client.query(
-    q.Let(
-      {
-        membership: q.Get(q.Ref(q.Collection('memberships'), membershipId)),
-        updatedMembership: q.Update(q.Select(['ref'], q.Var('membership')), {
-          data: { ...dataToUpdate },
-        }),
-      },
-      {
-        membership: q.Var('updatedMembership'),
-      }
-    )
+    q.Update(q.Ref(q.Collection('memberships'), membershipId), {
+      data: { ...dataToUpdate },
+    })
   );
 };
 

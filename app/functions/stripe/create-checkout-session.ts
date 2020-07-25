@@ -21,6 +21,7 @@ const createCheckoutSession = async (
     email: string;
     publishableKey: string;
     membership: any;
+    isOwner: boolean;
   }>(
     q.Let(
       {
@@ -59,9 +60,19 @@ const createCheckoutSession = async (
         email: q.Var('userEmail'),
         user: q.Var('stripeCustomerId'),
         account: q.Var('stripeAccountId'),
+        isOwner: q.Equals(
+          q.Ref(q.Collection('user_accounts'), token.userAccountId),
+          q.Select(['data', 'ownerAccount'], q.Var('communityAccount'))
+        ),
       }
     )
   );
+
+  if (stripeIds.isOwner) {
+    return res
+      .status(400)
+      .json({ message: 'Community Owners can not purchase premium.' });
+  }
 
   const communityUrl = `${process.env.ROOT_DOMAIN}/communities/${communityProfileId}`;
 
