@@ -6,34 +6,18 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Col, Row, Space, Statistic } from 'antd';
-import { IPremiumPrice } from 'app/helpers/types';
 import React from 'react';
 import useSWR from 'swr';
+import { IGetAccountBalanceResult } from 'app/functions/stripe/get-account-balance';
 
-const NumberStat: React.FC<any> = ({
-  amount = 0,
-  currency = 'gbp',
-  title,
-  prefix = '',
-  suffix = '',
-}) => {
-  const formatter = Intl.NumberFormat('en-GB', {
+const formatter = (currency = 'gbp', value = 0) =>
+  Intl.NumberFormat('en-GB', {
     style: 'currency',
     currency,
-  });
-
-  return (
-    <Statistic
-      title={title}
-      value={formatter.format(amount / 100)}
-      prefix={prefix}
-      suffix={suffix}
-    />
-  );
-};
+  }).format(value);
 
 const CommunityAdminDashboard = ({ communityId }) => {
-  const { data } = useSWR<IPremiumPrice[]>(
+  const { data } = useSWR<IGetAccountBalanceResult>(
     `/api/stripe/connect?action=accountBalance&communityProfileId=${communityId}`,
     async (url) => (await fetch(url)).json(),
     {
@@ -54,24 +38,28 @@ const CommunityAdminDashboard = ({ communityId }) => {
         <Col>
           <Statistic
             title="Premium Members"
-            value={3}
+            value={data?.totalPremium || 0}
             prefix={<SafetyOutlined />}
           />
         </Col>
         <Col>
-          <NumberStat
+          <Statistic
             title="Balance Pending"
+            value={formatter(
+              data?.balancePending.currency,
+              data?.balancePending.amount / 100
+            )}
             suffix={<ClockCircleOutlined />}
-            amount={data?.balancePending.amount}
-            currency={data?.balancePending.currency}
           />
         </Col>
         <Col>
-          <NumberStat
+          <Statistic
             title="Balance Available"
+            value={formatter(
+              data?.balanceAvailable.currency,
+              data?.balanceAvailable.amount / 100
+            )}
             suffix={<CheckCircleOutlined />}
-            amount={data?.balanceAvailable.amount}
-            currency={data?.balanceAvailable.currency}
           />
         </Col>
       </Row>

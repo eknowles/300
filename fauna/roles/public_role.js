@@ -26,6 +26,12 @@ module.exports = {
       },
     },
     {
+      resource: Index('community_premium_membership'),
+      actions: {
+        unrestricted_read: true,
+      },
+    },
+    {
       resource: Collection('user_profiles'),
       actions: {
         read: true,

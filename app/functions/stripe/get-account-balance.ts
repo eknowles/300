@@ -3,6 +3,18 @@ import { IUserTokenJwt } from 'app/helpers/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import stripe from 'app/helpers/stripe';
 
+interface IBalance {
+  amount: number;
+  currency: string;
+}
+
+export interface IGetAccountBalanceResult {
+  balanceAvailable: IBalance;
+  balancePending: IBalance;
+  totalMembers: number;
+  totalPremium: number;
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const getAccountBalance = async (
   token: IUserTokenJwt,
@@ -19,11 +31,17 @@ const getAccountBalance = async (
   const faunaResult = await client.query<any>(
     q.Let(
       {
-        totalCount: q.Count(
+        totalMembers: q.Count(
           q.Match(
             q.Index('community_profile_membership_by_communityProfile'),
             q.Ref(q.Collection('community_profiles'), communityProfileId)
           )
+        ),
+        totalPremium: q.Count(
+          q.Match(q.Index('community_premium_membership'), [
+            q.Ref(q.Collection('community_profiles'), communityProfileId),
+            true,
+          ])
         ),
         communityAccountRef: q.Match(
           q.Index('community_account_by_community_profile'),
@@ -36,11 +54,13 @@ const getAccountBalance = async (
         ),
       },
       {
-        totalCount: q.Var('totalCount'),
+        totalMembers: q.Var('totalMembers'),
+        totalPremium: q.Var('totalPremium'),
         isOwner: q.Var('isOwner'),
         stripeAccount: q.Select(
           ['data', 'stripeAccountId'],
-          q.Var('communityAccount')
+          q.Var('communityAccount'),
+          null
         ),
       }
     ),
@@ -49,24 +69,22 @@ const getAccountBalance = async (
     }
   );
 
-  const balance = await stripe.balance.retrieve({
-    stripeAccount: faunaResult.stripeAccount,
-  });
+  let balance = {
+    available: [{ currency: 'gbp', amount: 0 }],
+    pending: [{ currency: 'gbp', amount: 0 }],
+  };
 
-  const subscriptions = await stripe.subscriptions
-    .list(
-      { status: 'active' },
-      {
-        stripeAccount: faunaResult.stripeAccount,
-      }
-    )
-    .autoPagingToArray({ limit: 50 });
+  if (faunaResult.stripeAccount) {
+    balance = await stripe.balance.retrieve({
+      stripeAccount: faunaResult.stripeAccount,
+    });
+  }
 
   return res.json({
     balanceAvailable: balance.available[0],
     balancePending: balance.pending[0],
-    totalMembers: faunaResult.totalCount,
-    subscriptions,
+    totalMembers: faunaResult.totalMembers,
+    totalPremium: faunaResult.totalPremium,
   });
 };
 
