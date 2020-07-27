@@ -1,0 +1,19 @@
+{
+  "name": "Fauna GraphQL Schema",
+  "schemaPath": "schema.gql",
+  "extensions": {
+    "endpoints": {
+      "Offical GraphQL Endpoint": {
+        "url": "https://graphql.fauna.com/graphql",
+        "headers": {
+          "authorization": "Bearer fnADv7AKIMACB1gwT3nzO37Cbx3yhqXQMa9GWv8z"
+        },
+        "introspect": false
+      },
+      "Local GraphQL Proxy": {
+        "url": "http://localhost:3000/api/graphql",
+        "introspect": false
+      }
+    }
+  }
+}

@@ -31,10 +31,18 @@ module.exports = (phase) => {
 
   return {
     env: {
+      PHASE: phase,
+      IS_DEV: isDev,
       IS_PROD: isProd,
       IS_STAGING: isStaging,
-      DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+      FAUNADB_SECRET: process.env.FAUNADB_SECRET,
+      FAUNADB_PUBLIC_KEY: process.env.FAUNADB_PUBLIC_KEY,
       DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+      DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+      STRIPE_CONNECT_CLIENT_ID: process.env.STRIPE_CONNECT_CLIENT_ID,
+      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+      STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
       ROOT_DOMAIN: isProd
         ? DOMAINS.production
         : isStaging

@@ -1,14 +1,20 @@
-import React from 'react';
 import Head from 'next/head';
-import BrochureLayout from 'app/components/layout';
+import React from 'react';
+import { Typography } from 'antd';
+import InBeta from 'app/components/in-beta';
 
 const GamesPage: React.FC = () => (
-  <BrochureLayout>
+  <>
     <Head>
       <title>Game</title>
     </Head>
-    <div>game index</div>
-  </BrochureLayout>
+    <div className="wrapper">
+      <Typography.Title style={{ marginTop: '30px' }}>
+        Supported Games
+      </Typography.Title>
+    </div>
+    <InBeta />
+  </>
 );
 
 export default GamesPage;

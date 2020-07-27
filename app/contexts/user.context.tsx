@@ -1,48 +1,48 @@
+import { useQuery, gql } from '@apollo/client';
 import { useRouter } from 'next/router';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext } from 'react';
 
-export const UserContext = createContext(null);
+const USER_CONTEXT = gql`
+  query UserContextQuery {
+    profile: myProfile {
+      _id
+      username
+      avatarUrl
+      localeCode
+    }
+  }
+`;
+
+interface IUserProfile {
+  _id: string;
+  username: string;
+  avatarUrl: string;
+  localeCode: string;
+}
+
+interface IUserContext {
+  user?: IUserProfile;
+  loading?: boolean;
+  logout: () => void;
+}
+
+export const UserContext = createContext<IUserContext | null>(null);
 
 const UserContextProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState({});
-  const [fetched, setFetched] = useState(false);
+  const { loading, data } = useQuery(USER_CONTEXT);
   const router = useRouter();
 
-  const storeUser = (usr) => {
-    setUser(usr);
-  };
-
-  const logout = () => {
-    if (typeof document !== 'undefined') {
-      document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
-    }
-
-    setUser({});
-
-    router.push('/').catch();
-  };
-
-  useEffect(() => {
-    async function getData() {
-      const res = await fetch('/api/me');
-
-      if (res.status !== 200) {
-        return;
-      }
-
-      const newData = await res.json();
-
-      setUser(newData);
-      setFetched(true);
-    }
-
-    getData().catch();
-  }, []);
-
   return (
-    <UserContext.Provider value={{ user, storeUser, logout, fetched }}>
+    <UserContext.Provider
+      value={{
+        user: (data && data.profile) || {},
+        logout: () => router.push('/api/logout'),
+        loading,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
+
 export default UserContextProvider;

@@ -18,6 +18,7 @@ export interface IDiscordOAuth2TokenResponse {
   refresh_token: string;
   scope: string;
   token_type: string;
+  guild?: any;
 }
 
 export interface IDiscordGuild {
@@ -28,14 +29,40 @@ export interface IDiscordGuild {
   permissions: number;
 }
 
-export interface IAccount {
+export interface IUserAccount {
   email: string;
   discordId: string;
-  discordToken: any;
+  discordToken?: any;
 }
 
-export interface IProfile {
+export interface IUserProfile {
   username: string;
   avatarUrl: string;
   localeCode: string;
+}
+
+export interface IUserTokenJwt {
+  userAccountId: string;
+  userProfileId: string;
+  discordId: string;
+  userProfile: any;
+  key: string;
+}
+
+// premium plans
+export interface IPremiumPrice {
+  id: string;
+  name: string;
+  currency: string;
+  product: string;
+  unitAmount: number;
+  metadata: IPremiumPriceMetadata;
+  interval: string;
+  intervalCount: number;
+}
+
+export interface IPremiumPriceMetadata {
+  isSpecial?: string;
+  benefits?: string;
+  header?: string;
 }

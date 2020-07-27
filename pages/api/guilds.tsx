@@ -1,7 +1,6 @@
+import getUsersDiscordTokenQuery from 'app/fauna/queries/get-users-discord-token';
 import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
-import { getUserGuilds } from 'app/helpers/api';
-import { client, q } from 'app/helpers/fauna-client';
+import { getUserGuilds, getUserToken } from 'app/helpers/api';
 
 type Response =
   | Array<Record<'name' | 'id' | 'iconUrl', string>>
@@ -9,17 +8,23 @@ type Response =
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req: NextApiRequest, res: NextApiResponse<Response>) => {
-  const { token } = req.cookies;
+  const token = getUserToken(req);
 
   if (!token) {
-    return res.status(401).json({ message: 'No token found' });
+    return res.status(401).json({ message: 'Missing or Invalid Token' });
   }
 
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const user = await client.query<any>(
-    q.Get(q.Ref(q.Collection('accounts'), decoded.accountId))
-  );
-  const guilds = await getUserGuilds(user.data.discordToken.access_token);
+  let guilds = [];
+
+  try {
+    const discordToken = await getUsersDiscordTokenQuery(token.userAccountId);
+
+    guilds = await getUserGuilds(discordToken);
+  } catch (e) {
+    console.log(e);
+    return res.json([]);
+  }
+
   const ownedGuilds = guilds
     .filter((g) => g.owner)
     .map((g) => ({

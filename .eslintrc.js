@@ -26,6 +26,7 @@ module.exports = {
     'prettier/react',
   ],
   rules: {
+    'no-underscore-dangle': 0,
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
     'import/extensions': 0,
     'react/prop-types': 0,

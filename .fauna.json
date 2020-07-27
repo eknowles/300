@@ -1,0 +1,6 @@
+{
+  "schemaPath": "./fauna/schema.gql",
+  "secretEnv": "FAUNADB_SECRET",
+  "fnsDir": "fauna/functions",
+  "rolesDir": "fauna/roles"
+}
