@@ -78,8 +78,6 @@ type Membership @collection(name: "memberships") {
   customerId: String
   subscriptionId: String
   isPremium: Boolean
-  isActive: Boolean
-  isPending: Boolean
   createdAt: Time!
 }
 
@@ -94,7 +92,7 @@ type UserProfile @collection(name: "user_profiles") {
 
 type CommunityProfile @collection(name: "community_profiles") {
   name: String!
-  tag: String
+  shortName: String! @unique
   region: String! # EU, NA, OC
   aboutText: String
   premiumText: String

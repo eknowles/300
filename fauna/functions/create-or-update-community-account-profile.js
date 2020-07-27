@@ -99,6 +99,7 @@ module.exports = {
                   {
                     data: {
                       name: Select(['guild', 'name'], Var('input')),
+                      shortName: Select(['guild', 'id'], Var('input')),
                       aboutText:
                         'Placeholder. To be edited by community owner.',
                       premiumText: defaultPremiumText,
@@ -149,6 +150,7 @@ module.exports = {
                       ['ref'],
                       Var('createdCommunityProfile')
                     ),
+                    isPremium: true,
                     role: 'OWNER',
                     createdAt: Now(),
                   },

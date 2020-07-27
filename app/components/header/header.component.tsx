@@ -7,6 +7,16 @@ import UserMenu from '../user-menu';
 
 const { Header } = Layout;
 
+const MainMenu = ({ router }) => {
+  return (
+    <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
+      <Menu.Item key="communities" onClick={() => router.push('/communities')}>
+        Communities
+      </Menu.Item>
+    </Menu>
+  );
+};
+
 const HeaderComponent: React.FC = () => {
   const router = useRouter();
   const { user } = useContext(UserContext);
@@ -28,14 +38,6 @@ const HeaderComponent: React.FC = () => {
               </a>
             </Link>
           </div>
-          <Menu theme="dark" mode="horizontal" selectedKeys={[]}>
-            <Menu.Item
-              key="communities"
-              onClick={() => router.push('/communities')}
-            >
-              Communities
-            </Menu.Item>
-          </Menu>
         </Space>
 
         <div className="auth">

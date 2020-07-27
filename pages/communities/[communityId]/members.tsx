@@ -27,8 +27,6 @@ const CommunityMembersPage: React.FC = () => {
               role
               createdAt
               isPremium
-              isPending
-              isActive
               userProfile {
                 _id
                 username
