@@ -14,8 +14,8 @@ if (typeof require !== 'undefined') {
 
 const DOMAINS = {
   development: 'http://localhost:3000',
-  production: 'https://300.team',
-  preview: 'https://dev.300.team',
+  production: 'https://300-eknowles.vercel.app',
+  preview: 'https://300-eknowles.vercel.app',
 };
 
 module.exports = (phase) => {
